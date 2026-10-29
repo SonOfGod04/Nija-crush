@@ -12,4 +12,4 @@ Single-file, no build step, no dependencies. Progress is saved in the browser (l
 ## Play locally
 Open `index.html` in any modern browser.
 
-Get playing!
+Get playing, now!
