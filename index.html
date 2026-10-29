@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naija Crush</title>
+<style>
+:root{--bg1:#e6f8ec;--bg2:#fff3c9;--card:#fff;--ink:#10301b;--mute:#52705b;--bd:#bfe0c9;--g:#008751;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#0b2616;--bg2:#24300c;--card:#12301d;--ink:#eaf7ee;--mute:#9bbfa6;--bd:#245a38}}
+:root[data-theme="dark"]{--bg1:#0b2616;--bg2:#24300c;--card:#12301d;--ink:#eaf7ee;--mute:#9bbfa6;--bd:#245a38}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.scr{display:none;max-width:480px;margin:0 auto;padding:14px}.scr.on{display:block}
+.mute{color:var(--mute);font-size:13px}
+.btn{background:linear-gradient(180deg,#14b46c,#008751);color:#fff;border:0;border-radius:14px;padding:13px 26px;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #005a36;margin:8px 4px}
+.btn.alt{background:var(--card);color:var(--ink);box-shadow:0 4px 0 var(--bd);border:1px solid var(--bd)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #005a36}
+#title{text-align:center;padding-top:20px;position:relative;overflow:hidden}
+.skyline{font-size:34px;letter-spacing:6px}
+.logo{font-size:min(17vw,76px);line-height:.95;font-weight:900;background:linear-gradient(90deg,#008751,#f2a900,#008751);-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0}
+.tag{font-weight:700;color:var(--g)}
+.mascot{font-size:96px;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px) rotate(4deg)}}
+.row{font-size:34px;letter-spacing:6px;margin-bottom:14px}
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hdr h2{margin:0;font-size:22px;color:var(--g)}
+.st{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px;margin:10px 0;cursor:pointer;box-shadow:0 3px 0 var(--bd)}
+.st.lock{opacity:.5;cursor:not-allowed}
+.av{font-size:34px;width:56px;height:56px;border-radius:50%;background:linear-gradient(145deg,#ffe066,#f2a900);display:flex;align-items:center;justify-content:center;flex:none}
+.st b{display:block}.st small{color:var(--mute)}
+.ibtn{background:var(--card);border:1px solid var(--bd);border-radius:10px;font-size:18px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.talk{display:flex;gap:10px;align-items:center;margin:10px 0}
+.talk .av{width:46px;height:46px;font-size:28px}
+#msg{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;font-weight:600;font-size:14px;flex:1}
+.goals{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chip{background:var(--card);border:2px solid var(--bd);border-radius:20px;padding:4px 12px;font-weight:800}
+.chip.ok{border-color:var(--g);color:var(--g)}
+.stats{display:flex;justify-content:space-between;font-weight:800;margin:6px 2px}
+.frame{padding:7px;border-radius:18px;background:repeating-linear-gradient(45deg,#008751 0 10px,#f2a900 10px 16px,#fff 16px 22px)}
+#board{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;background:var(--card);padding:6px;border-radius:12px}
+.t{aspect-ratio:1;border:0;border-radius:14px;padding:0;cursor:pointer;font-size:min(7vw,30px);display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.6),transparent 42%),linear-gradient(150deg,var(--a),var(--b));box-shadow:0 3px 0 rgba(0,0,0,.25),inset 0 -3px 6px rgba(0,0,0,.18);transition:transform .15s}
+.c0{--a:#ff8a3d;--b:#d6381e}.c1{--a:#c98b5a;--b:#7b3f1d}.c2{--a:#ffe066;--b:#e0a800}.c3{--a:#ffd7a0;--b:#e98a2e}.c4{--a:#ffd24d;--b:#7cb518}.c5{--a:#ff5d9e;--b:#9b1b5a}
+.t.sel{outline:3px solid #fff;transform:scale(1.12);box-shadow:0 0 14px #ffe066}
+.t.pop{animation:pop .28s forwards}.t.new{animation:drop .25s}.t.shake{animation:shake .25s}
+@keyframes pop{to{transform:scale(0) rotate(90deg);opacity:0}}
+@keyframes drop{from{transform:translateY(-34px);opacity:0}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.ov.on{display:flex}
+.box{background:var(--card);border-radius:20px;padding:22px;text-align:center;max-width:340px;width:100%;border:3px solid #f2a900}
+.box h2{margin:0 0 6px;color:var(--g)}.box .big{font-size:60px}
+.osh{position:fixed;left:0;right:0;top:34%;text-align:center;font-size:min(14vw,64px);font-weight:900;color:#ffd34d;-webkit-text-stroke:2px #008751;pointer-events:none;opacity:0;z-index:6}
+.osh.go{animation:oshy 1.1s ease-out}
+@keyframes oshy{0%{opacity:0;transform:scale(.3) rotate(-8deg)}25%{opacity:1;transform:scale(1.25) rotate(4deg)}70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.1) translateY(-30px)}}
+.cf{position:fixed;top:-30px;font-size:26px;pointer-events:none;z-index:6;animation:fall 1.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+.t{position:relative}.t i{position:absolute;right:1px;top:-3px;font-size:13px;font-style:normal}
+.c6{--a:#e0b98a;--b:#a9743a}.c7{--a:#b57edc;--b:#6a2fa0}
+.t.s1{box-shadow:0 0 10px 2px #ffe066,inset 0 -3px 6px rgba(0,0,0,.18);animation:glow .7s infinite alternate}
+.t.s2{box-shadow:0 0 12px 3px #ff5d9e,inset 0 -3px 6px rgba(0,0,0,.18);animation:glow .5s infinite alternate}
+@keyframes glow{to{transform:scale(1.07)}}
+.shout{position:fixed;left:0;right:0;top:18%;text-align:center;font-size:min(10vw,44px);font-weight:900;text-shadow:0 3px 0 #004d2b,0 0 14px rgba(0,0,0,.55);pointer-events:none;opacity:0;z-index:7;padding:0 10px}
+.shout.go{animation:sh 1.3s ease-out}
+@keyframes sh{0%{opacity:0;transform:scale(.4) rotate(-6deg)}20%{opacity:1;transform:scale(1.2) rotate(3deg)}65%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-40px) scale(1.05)}}
+</style></head><body>
+<div class="scr on" id="title">
+<div class="skyline">🌴🏙️🚌🌴</div>
+<div class="logo">Naija<br>Crush</div>
+<div class="tag">Match. Cook. Chop life! 🇳🇬</div>
+<div class="mascot">👩🏾‍🍳</div>
+<div class="row">🍚🍢🍌🍩🌽🍹</div>
+<p class="mute"><b>45 missions across Nigeria 🇳🇬</b></p>
+<button class="btn" id="play">▶ Start Game</button>
+<p class="mute">Turn your sound on for the full vibe 🔊</p>
+</div>
+<div class="scr" id="map">
+<div class="hdr"><h2>Choose your mission</h2><button class="ibtn" id="mhome">🏠</button></div>
+<div id="stages"></div>
+</div>
+<div class="scr" id="game">
+<div class="hdr"><b id="stg"></b><span><button class="ibtn" id="sfxb">🔊</button> <button class="ibtn" id="musb">🎵</button> <button class="ibtn" id="pz">⏸</button></span></div>
+<div class="talk"><div class="av" id="av"></div><div id="msg"></div></div>
+<div class="goals" id="goals"></div>
+<div class="stats"><span>Score <span id="sc">0</span></span><span>Moves <span id="mv">0</span></span></div>
+<div class="frame"><div id="board"></div></div>
+</div>
+<div class="shout" id="shout"></div>
+<div class="osh" id="osh"></div>
+<div class="ov" id="ov"><div class="box" id="box"></div></div>
+<script>
+const N=8,T=['🍚','🍢','🍌','🍩','🌽','🍹','🥜','🍠'];
+const R=[
+"Mama Put’s Lunch Rush|Yaba, Lagos|Mama Put|👩🏾‍🍳|Customers don full my shop. Help me serve!",
+"Suya Night|Wuse, Abuja|Mallam Musa|👨🏿‍🍳|Suya fire dey hot tonight!",
+"Danfo Go-Slow|Oshodi, Lagos|Driver Ade|🧔🏾|Conductor don run! Keep passengers happy.",
+"Onitsha Market Hustle|Onitsha, Anambra|Aunty Ngozi|👵🏾|Biggest market in West Africa dey call!",
+"Durbar Festival|Kano|Alhaji Bello|👴🏿|The horsemen are coming. Honour the Emir!",
+"Eyo Festival|Lagos Island|Eyo Masquerade|🎭|White-robed Eyo dey dance, join the parade!",
+"Osun Grove|Osogbo, Osun|Priestess Osun|🧕🏾|Bring offerings to the sacred river.",
+"Ojude Oba|Ijebu-Ode, Ogun|Baba Ijebu|🧓🏿|Horses and agbada everywhere. Dress well!",
+"Egungun Night|Oyo|Elder Egungun|🎭|Our ancestors dey visit. Feast with them!",
+"Owambe Grand|Ibadan|Chief Iyabo|👸🏾|My daughter’s wedding no fit fail!",
+"New Yam Festival|Awka, Anambra|Eze Nwa|🤴🏿|First yam of the season, give thanks!",
+"Mmanwu Masquerades|Enugu|Mazi Okafor|🎭|Masquerade dey come, clear the way!",
+"Nri Heritage|Anambra|Eze Nri|👑|Ancient Igbo kingdom stories dey sweet.",
+"Calabar Carnival|Calabar, Cross River|Efik Queen|💃🏾|Africa’s biggest street party. Dance with me!",
+"Ekombi Dance|Uyo, Akwa Ibom|Ibibio Dancer|💃🏿|Hips and drums, make we shake!",
+"Boat Regatta|Yenagoa, Bayelsa|Captain Ijaw|🧑🏿‍✈️|Canoes dey race on the creek!",
+"Banga Soup Cook-off|Warri, Delta|Mama Isoko|👩🏿‍🍳|Palm nut soup and starch, who go win?",
+"Igue Festival|Benin City, Edo|Oba’s Messenger|👑|The royal beads dey shine. Honour the Oba!",
+"Benin Bronzes|Benin City, Edo|Master Caster|🧑🏿‍🎨|Cast the bronze, the world dey watch!",
+"Port Harcourt Carnival|Port Harcourt, Rivers|Carnival Queen|👸🏿|Garden City, make we party!",
+"Kwagh-hir Puppets|Makurdi, Benue|Tiv Showman|🧑🏿‍🎤|Tiv puppets and masks dey tell stories!",
+"Idoma Masquerade|Otukpo, Benue|Idoma Elder|🤴🏾|Drums are calling from Otukpo.",
+"Ata Igala|Idah, Kogi|Ata Igala|👑|Royal feast in the old Igala kingdom.",
+"Nupe Brass Craft|Bida, Niger|Master Nupe|🧑🏿‍🔧|Hammer the brass, Bida is proud!",
+"Berom Festival|Jos, Plateau|Jos Elder|🧓🏾|Cool Plateau air, hot Berom dance!",
+"Confluence|Lokoja, Kogi|Boat Captain|🧑🏾‍✈️|Where Niger meets Benue, sail with me!",
+"Abuja Carnival|Abuja|Carnival MC|🧑🏿‍🎤|All the tribes in one parade!",
+"Ilorin Durbar|Ilorin, Kwara|Emir’s Horseman|🏇|Gallop, gallop, the Emir is watching!",
+"Kainji Lake|New Bussa, Niger|Fisher Baba|🧑🏿‍🌾|Big fish dey Kainji. Cast the net!",
+"Gurara Falls|Niger State|Tour Guide|🧑🏾‍🦱|Waterfall wahala, catch the treats!",
+"Kofar Mata Dye Pits|Kano|Dyer Danjuma|🧑🏿‍🎨|Indigo cloth since 1498. Dye with me!",
+"Argungu Fishing|Argungu, Kebbi|Fisher Chief|🎣|Jump in the river, catch the biggest fish!",
+"Zaria Sallah Durbar|Zaria, Kaduna|Emir of Zazzau|🤴🏿|Sallah greetings! Horses and drums!",
+"Sokoto Caliphate|Sokoto|Sultan’s Scribe|👳🏿‍♂️|History dey every wall. Write with me!",
+"Katsina Walled City|Katsina|Hajiya Rabi|🧕🏿|Old city gates, new sweet treats!",
+"Fulani Cattle Market|Gusau, Zamfara|Fulani Herder|🐄|Cattle everywhere. Fura for everybody!",
+"Birnin Kudu Rocks|Jigawa|Rock Guide|🧗🏿|Climb the rocks, collect the goodies!",
+"Nok Terracotta|Kaduna|Nok Sculptor|🏺|2,000-year-old art, fresh hustle!",
+"Fura da Nono|Damaturu, Yobe|Fura Seller|🧕🏾|Cold nono, millet balls, come and drink!",
+"Shehu of Borno|Maiduguri, Borno|Shehu’s Waziri|👳🏿‍♂️|The Shehu’s court is open. Impress us!",
+"Yankari Reserve|Bauchi|Park Ranger|🐘|Elephants dey Yankari! Feed them well.",
+"Tangale Hills|Gombe|Hill Elder|👴🏾|Climb the Tangale hills for the harvest.",
+"Mambilla Plateau|Taraba|Tea Farmer|🧑🏾‍🌾|Tea, cool air and ripe harvest!",
+"Detty December|Lagos|DJ Detty|🎧|Lagos dey vibe! Turn the music up!",
+"Independence Jubilee|Eagle Square, Abuja|Mama Naija|👩🏾‍🦳|One Nigeria, one big party. Finish strong!"
+].map(x=>x.split('|'));
+const K=i=>i<14?6:i<28?7:8;
+const S=R.map(([n,loc,who,av,say],i)=>{const nk=K(i),sp=i%5==4,a=(i*3)%nk,b=(a+2+i%3)%nk,g={};g[a]=12+Math.floor(i*.2);if(!sp&&i%2)g[b]=7+Math.floor(i*.12);return{n,loc,who,av,say,g,sc:sp?1200+i*40:0,mv:22+Math.floor(i/4)+(sp?2:0),sp,nk}});
+const praise=['Correct!','Sweet die!','Omo!','E don happen!','No be small thing!','Oga at the top!'];
+let g=[],sp=[],nk=6,sel=-1,score=0,moves=0,cur=0,busy=false,paused=false,goals={},fresh=new Set(),pop=new Set(),bonusPts=0,prog={u:0,s:[]};
+const $=id=>document.getElementById(id);
+try{const p=JSON.parse(localStorage.getItem('naijaCrush'));if(p&&typeof p.u==='number')prog=p}catch(e){}
+function save(){try{localStorage.setItem('naijaCrush',JSON.stringify(prog))}catch(e){}}
+const rnd=()=>Math.floor(Math.random()*nk);
+async function sleep(ms){await new Promise(r=>setTimeout(r,ms));while(paused)await new Promise(r=>setTimeout(r,100))}
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id===id))}
+/* ---------- sound ---------- */
+let AC=null,sfxOn=true,musOn=true,mt=null,step=0;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,d,type,v,at,f2){const a=ac();if(!a)return;const t=a.currentTime+(at||0),o=a.createOscillator(),n=a.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);n.gain.setValueAtTime(v||.15,t);n.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(n);n.connect(a.destination);o.start(t);o.stop(t+d+.02)}
+const sx=(...a)=>{if(sfxOn)tone(...a)};
+const P=[523,587,659,784,880,1047,1175];
+const sfx={pick:()=>sx(660,.08,'triangle',.15),bad:()=>sx(170,.22,'sawtooth',.09,0,80),
+match:c=>{for(let i=0;i<3;i++)sx(P[Math.min(c-1+i,6)],.16,'triangle',.15,i*.07)},
+boom:()=>{sx(120,.35,'sawtooth',.25,0,40);sx(90,.4,'sine',.3,0,30)},
+tick:k=>sx(500+k*45,.1,'square',.07),
+oshey:()=>{sx(300,.2,'sine',.4,0,110);sx(260,.2,'sine',.35,.2,100);sx(340,.25,'sine',.4,.4,120);[784,988,1175,1568].forEach((f,i)=>sx(f,.35,'triangle',.18,.7+i*.12))},
+win:()=>[523,659,784,1047,784,1047,1319].forEach((f,i)=>sx(f,.25,'triangle',.18,i*.13)),
+lose:()=>[392,349,294,196].forEach((f,i)=>sx(f,.3,'sawtooth',.08,i*.18))};
+function music(){clearInterval(mt);mt=null;if(!musOn||paused||!AC)return;
+mt=setInterval(()=>{const s=step++%16;
+if(s%4===0)tone(110,.22,'sine',.14,0,50);
+if(s%2===1)tone(6000,.03,'square',.01);
+if([3,6,10,14].includes(s))tone(Math.random()<.5?220:165,.14,'triangle',.07);
+if([2,5,8,11,13].includes(s))tone(P[Math.floor(Math.random()*5)]/2,.15,'triangle',.05)},150)}
+$('sfxb').onclick=()=>{sfxOn=!sfxOn;$('sfxb').textContent=sfxOn?'🔊':'🔇'};
+$('musb').onclick=()=>{musOn=!musOn;$('musb').style.opacity=musOn?1:.4;music()};
+/* ---------- overlay ---------- */
+function ov(html,btns){const b=$('box');b.innerHTML=html;btns.forEach(([l,fn,alt])=>{const x=document.createElement('button');x.className='btn'+(alt?' alt':'');x.textContent=l;x.onclick=()=>{$('ov').classList.remove('on');fn()};b.appendChild(x)});$('ov').classList.add('on')}
+const goalTxt=s=>Object.keys(s.g).map(t=>T[t]+' ×'+s.g[t]).concat(s.sc?['⭐ '+s.sc+' pts']:[]).join('  ·  ')+'  ·  '+s.mv+' moves';
+/* ---------- screens ---------- */
+$('play').onclick=()=>{ac();music();renderMap();show('map')};
+$('mhome').onclick=()=>show('title');
+function renderMap(){const c=$('stages');c.innerHTML='';
+S.forEach((s,i)=>{const d=document.createElement('div'),lk=i>prog.u;d.className='st'+(lk?' lock':'');
+d.innerHTML='<div class="av">'+(lk?'🔒':s.av)+'</div><div><b>'+(i+1)+'. '+s.n+'</b><small>'+s.loc+' · '+s.who+'</small><br>'+(prog.s[i]?'⭐'.repeat(prog.s[i]):'<small>Not yet played</small>')+'</div>';
+if(!lk)d.onclick=()=>intro(i);c.appendChild(d)})}
+function intro(i){const s=S[i];ov('<div class="big">'+s.av+'</div><h2>'+s.who+'</h2><p>“'+s.say+'”</p><p><b>'+goalTxt(s)+'</b></p>',[['Let’s go! 🔥',()=>begin(i)],['Back',()=>show('map'),1]])}
+$('pz').onclick=()=>{if(busy&&!paused&&$('ov').classList.contains('on'))return;paused=true;music();
+ov('<div class="big">⏸</div><h2>Game paused</h2><p class="mute">Rest small, oga.</p>',[['▶ Resume',()=>{paused=false;music()}],['↻ Restart stage',()=>begin(cur),1],['🗺 Mission map',()=>{paused=false;renderMap();show('map');music()},1]])};
+function begin(i){cur=i;const s=S[i];goals={...s.g};nk=s.nk;score=0;moves=s.mv;sel=-1;paused=false;busy=false;fresh=new Set();pop=new Set();fill();if(s.sp)seed();
+$('av').textContent=s.av;$('stg').textContent='Stage '+(i+1)+': '+s.n;say(s.who+': Make we go!');show('game');render();music();shout('Stage '+(i+1)+': '+s.loc+' 🇳🇬')}
+/* ---------- board ---------- */
+function fill(){g=[];sp=Array(N*N).fill(0);for(let r=0;r<N;r++)for(let c=0;c<N;c++){let v;do{v=rnd()}while((c>=2&&g[r*N+c-1]===v&&g[r*N+c-2]===v)||(r>=2&&g[(r-1)*N+c]===v&&g[(r-2)*N+c]===v));g[r*N+c]=v}if(!hasMove())fill()}
+function find(){const m=new Set();for(let r=0;r<N;r++)for(let c=0;c<N;c++){const v=g[r*N+c];if(v<0)continue;
+if(c<N-2&&g[r*N+c+1]===v&&g[r*N+c+2]===v){m.add(r*N+c);m.add(r*N+c+1);m.add(r*N+c+2)}
+if(r<N-2&&g[(r+1)*N+c]===v&&g[(r+2)*N+c]===v){m.add(r*N+c);m.add((r+1)*N+c);m.add((r+2)*N+c)}}return m}
+const adj=(a,b)=>{const d=Math.abs(a-b);return d===N||(d===1&&Math.floor(a/N)===Math.floor(b/N))};
+const swap=(a,b)=>{[g[a],g[b]]=[g[b],g[a]];[sp[a],sp[b]]=[sp[b],sp[a]]};
+function hasMove(){for(let i=0;i<N*N;i++)for(const j of[i+1,i+N]){if(j>=N*N||!adj(i,j))continue;swap(i,j);const ok=find().size>0;swap(i,j);if(ok)return true}return false}
+const done=()=>Object.keys(goals).every(t=>goals[t]<=0)&&(!S[cur].sc||score>=S[cur].sc);
+function say(t){$('msg').textContent=t}
+function render(){const b=$('board');b.innerHTML='';
+g.forEach((v,i)=>{const d=document.createElement('button');d.className='t c'+v+(sp[i]?' s'+sp[i]:'')+(i===sel?' sel':'')+(pop.has(i)?' pop':'')+(fresh.has(i)?' new':'');d.innerHTML=T[v]+(sp[i]?'<i>'+(sp[i]>1?'💥':'⚡')+'</i>':'');d.onclick=()=>tap(i);b.appendChild(d)});
+$('sc').textContent=score;$('mv').textContent=moves;
+const s=S[cur];$('goals').innerHTML=Object.keys(goals).map(t=>'<span class="chip'+(goals[t]<=0?' ok':'')+'">'+T[t]+' '+Math.max(0,goals[t])+'</span>').join('')+(s.sc?'<span class="chip'+(score>=s.sc?' ok':'')+'">⭐ '+Math.min(score,s.sc)+'/'+s.sc+'</span>':'')}
+async function tap(i){if(busy||paused)return;
+if(sel<0){sel=i;sfx.pick();render();return}
+if(sel===i){sel=-1;render();return}
+if(!adj(sel,i)){sel=i;sfx.pick();render();return}
+busy=true;const a=sel;sel=-1;swap(a,i);
+if(!find().size&&!sp[a]&&!sp[i]){render();const e=$('board').children;e[a].classList.add('shake');e[i].classList.add('shake');sfx.bad();await sleep(260);swap(a,i);render();say('That one no work. Try another!');busy=false;return}
+moves--;render();await cascade([a,i]);
+if(done()){await bonus();win()}
+else if(moves<=0){lose()}
+else{if(moves<=3)shout('Only '+moves+' move'+(moves>1?'s':'')+' left! Hustle! 😤');if(!hasMove()){say('No more moves o! Mixing am...');do{g.sort(()=>Math.random()-.5)}while(find().size||!hasMove());render()}busy=false}}
+const praise2=['Correct!','Sweet die!','Omo! 🔥','E don happen!','No be small thing! 😮','Oga at the top! 👑','Chai! Wonders shall never end! 🤯'];
+function shout(t){const o=$('shout');o.textContent=t;o.style.color=['#ffd34d','#ff6fa5','#7dffb0','#7fd4ff'][Math.floor(Math.random()*4)];o.classList.remove('go');void o.offsetWidth;o.classList.add('go')}
+function seed(){for(let k=0;k<4;k++)sp[Math.floor(Math.random()*N*N)]=k===3?2:1}
+function runs(){const o=[];
+for(let r=0;r<N;r++){let c=0;while(c<N){const v=g[r*N+c];let e=c;while(v>=0&&e+1<N&&g[r*N+e+1]===v)e++;if(v>=0&&e-c>=2){const a=[];for(let k=c;k<=e;k++)a.push(r*N+k);o.push(a)}c=e+1}}
+for(let c=0;c<N;c++){let r=0;while(r<N){const v=g[r*N+c];let e=r;while(v>=0&&e+1<N&&g[(e+1)*N+c]===v)e++;if(v>=0&&e-r>=2){const a=[];for(let k=r;k<=e;k++)a.push(k*N+c);o.push(a)}r=e+1}}
+return o}
+async function cascade(force){let c=0,first=true;
+while(true){
+const m=new Set(),nw=[];
+runs().forEach(a=>{a.forEach(i=>m.add(i));if(a.length>=4)nw.push([a[Math.floor(a.length/2)],a.length>=5?2:1])});
+if(first&&force)force.forEach(i=>{if(sp[i])m.add(i)});
+first=false;if(!m.size)break;c++;
+nw.forEach(x=>m.delete(x[0]));
+const q=[...m];let blast=0;
+while(q.length){const i=q.pop();if(!sp[i])continue;blast++;const r=Math.floor(i/N),cc=i%N,add=[];
+if(sp[i]===1){for(let k=0;k<N;k++)add.push(r*N+k,k*N+cc)}
+else{for(let k=0;k<N*N;k++){if(g[k]===g[i]||(Math.abs(Math.floor(k/N)-r)<=1&&Math.abs(k%N-cc)<=1))add.push(k)}}
+sp[i]=0;add.forEach(j=>{if(!m.has(j)&&!nw.some(x=>x[0]===j)){m.add(j);q.push(j)}})}
+pop=m;render();sfx.match(c);if(blast)sfx.boom();await sleep(300);
+score+=m.size*10*c;
+m.forEach(i=>{if(goals[g[i]]!==undefined)goals[g[i]]--;g[i]=-1;sp[i]=0});
+nw.forEach(x=>{sp[x[0]]=x[1]});
+pop=new Set();fresh=new Set();
+for(let x=0;x<N;x++){const col=[];for(let r=N-1;r>=0;r--)if(g[r*N+x]>=0)col.push([g[r*N+x],sp[r*N+x]]);
+for(let r=N-1,k=0;r>=0;r--,k++){if(k<col.length){g[r*N+x]=col[k][0];sp[r*N+x]=col[k][1]}else{g[r*N+x]=rnd();sp[r*N+x]=0;fresh.add(r*N+x)}}}
+if(nw.some(x=>x[1]===2))shout('JOLLOF BOMB CREATED! 💥');
+else if(nw.length)shout('PEPPER POWER! ⚡');
+else if(blast)shout('BOOM! Omo! 💥');
+else if(c>=2)shout(praise2[Math.min(c,7)-1]+' x'+c);
+say(S[cur].who+': '+(c>1?praise[Math.min(c,6)-1]+' x'+c+' combo!':praise[Math.floor(Math.random()*2)]));
+render();await sleep(260);fresh=new Set()}
+render()}
+/* ---------- effects & endings ---------- */
+function burst(){const e=['🇳🇬','🎉','🍚','🍢','💚','🍩'];for(let i=0;i<22;i++){const s=document.createElement('span');s.className='cf';s.textContent=e[i%6];s.style.left=Math.random()*100+'vw';s.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2400)}}
+function oshey(t){const o=$('osh');o.textContent=t;o.classList.remove('go');void o.offsetWidth;o.classList.add('go')}
+async function bonus(){bonusPts=0;if(moves<=0)return;oshey('Osheyyyy! 🔥');burst();sfx.oshey();say('Extra moves bonus!');await sleep(1000);
+let k=0;while(moves>0){moves--;score+=100;bonusPts+=100;sfx.tick(k++);say('Oshey! +100 for each extra move');render();await sleep(380)}
+oshey('Osheyyyy!!! 🇳🇬');burst();sfx.oshey();await sleep(1000)}
+function win(){const left=bonusPts/100,st=left>=8?3:left>=4?2:1,s=S[cur];
+prog.s[cur]=Math.max(prog.s[cur]||0,st);if(cur+1>prog.u&&cur+1<S.length)prog.u=cur+1;save();sfx.win();burst();shout('MISSION DON LAND! 🏆');
+const last=cur===S.length-1;
+ov('<div class="big">'+s.av+'</div><h2>'+(last?'Naija Champion! 🏆':'Mission complete! 🎉')+'</h2><p style="font-size:28px">'+'⭐'.repeat(st)+'</p><p>“Oshey! Thank you o, you try well well!”</p><p class="mute">Score '+score+(bonusPts?' (includes '+bonusPts+' extra-move bonus)':'')+'</p>',
+(last?[]:[['Next mission ➜',()=>intro(cur+1)]]).concat([['Mission map',()=>{renderMap();show('map')},1]]))}
+function lose(){sfx.lose();const s=S[cur];ov('<div class="big">😅</div><h2>Ehn ehn, moves don finish</h2><p>“'+s.who+': No wahala, try again!”</p>',[['Try again',()=>begin(cur)],['Mission map',()=>{renderMap();show('map')},1]])}
+</script></body></html>
