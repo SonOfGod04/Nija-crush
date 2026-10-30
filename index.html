@@ -60,27 +60,59 @@ body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--
 .shout{position:fixed;left:0;right:0;top:18%;text-align:center;font-size:min(10vw,44px);font-weight:900;text-shadow:0 3px 0 #004d2b,0 0 14px rgba(0,0,0,.55);pointer-events:none;opacity:0;z-index:7;padding:0 10px}
 .shout.go{animation:sh 1.3s ease-out}
 @keyframes sh{0%{opacity:0;transform:scale(.4) rotate(-6deg)}20%{opacity:1;transform:scale(1.2) rotate(3deg)}65%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-40px) scale(1.05)}}
+.box{max-height:90vh;overflow:auto}
+.hero{border-radius:26px;padding:16px 14px 20px;text-align:center;color:#fff;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 0,#12a05f 0,#064d2d 48%,#021b0f 100%);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.band{height:10px;border-radius:6px;margin:6px 0;background:repeating-linear-gradient(45deg,#008751 0 10px,#f2a900 10px 16px,#fff 16px 22px)}
+.kick{font-size:11px;letter-spacing:2px;font-weight:800;color:#ffd34d;margin-top:8px}
+.logo{font-size:min(19vw,84px);line-height:.92;font-weight:900;color:#fff;margin:8px 0;text-shadow:0 2px 0 #f2a900,0 4px 0 #b87d00,0 10px 14px rgba(0,0,0,.45)}
+.talk2{display:flex;gap:10px;align-items:center;margin:10px 0}
+.mas{font-size:52px;width:84px;height:84px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 25%,#ffe9a0,#f2a900);border:4px solid #fff;animation:bob 1.8s ease-in-out infinite}
+.bub{background:var(--card);border:1px solid var(--bd);border-radius:16px 16px 16px 4px;padding:10px 12px;margin:8px 0;text-align:left;font-size:15px}
+.bub.dk{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff;margin:0}
+.cast{display:flex;justify-content:space-between;gap:4px;margin:12px 0}
+.cm{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px}.cm small{opacity:.75;font-size:10px}
+.por{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;background:radial-gradient(circle at 30% 25%,hsl(var(--h) 85% 78%),hsl(var(--h) 65% 42%));border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.35);flex:none;margin:0 auto 4px}
+.por.sm{width:46px;height:46px;font-size:26px;margin:0}.por.big{width:92px;height:92px;font-size:52px}.cm .por{width:54px;height:54px;font-size:30px}
+#nick{width:100%;padding:12px;border-radius:12px;border:2px solid #ffd34d;background:rgba(255,255,255,.95);color:#10301b;font-size:16px;text-align:center;margin:6px 0}
+.btn.gold{background:linear-gradient(180deg,#ffd34d,#f2a900);color:#3a2600;box-shadow:0 5px 0 #a87400;font-size:22px;padding:14px 38px;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:scale(1.05)}}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.pill{border:1px solid var(--bd);background:var(--card);color:var(--ink);border-radius:20px;padding:8px 14px;font-weight:700;cursor:pointer}
+.hero .pill{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.4)}
+.fl{position:absolute;top:-30px;font-size:24px;opacity:.5;pointer-events:none;animation:fall 7s linear infinite}
+.lf{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.lfb{background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:6px 12px;font-size:20px;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;align-items:center}
+.lfb small{font-size:10px;font-weight:700}.lfb:disabled{opacity:.4}.lfb.on{border-color:#f2a900;background:#fff3c9;color:#3a2600}
+.lbr{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:9px 10px;margin:6px 0}
+.lbr.me{border:2px solid #f2a900}.rk{width:30px;text-align:center}.nm{flex:1;font-size:13px}.pts{font-weight:900;color:var(--g)}
+.fq{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px;margin:10px 0}
+.fq h3{margin:0 0 4px}.pb{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin:8px 0}.pb div{height:100%;background:linear-gradient(90deg,#14b46c,#f2a900)}
+.fq .pill{padding:6px 12px}.fq .pill:disabled{opacity:.4}
 </style></head><body>
-<div class="scr on" id="title">
-<div class="skyline">🌴🏙️🚌🌴</div>
-<div class="logo">Naija<br>Crush</div>
-<div class="tag">Match. Cook. Chop life! 🇳🇬</div>
-<div class="mascot">👩🏾‍🍳</div>
-<div class="row">🍚🍢🍌🍩🌽🍹</div>
-<p class="mute"><b>45 missions across Nigeria 🇳🇬</b></p>
-<button class="btn" id="play">▶ Start Game</button>
-<p class="mute">Turn your sound on for the full vibe 🔊</p>
-</div>
+<div class="scr on" id="title"><div class="hero">
+<div class="band"></div>
+<div class="kick">🇳🇬 THE NAIJA PUZZLE ADVENTURE</div>
+<div class="logo">NAIJA<br>CRUSH</div>
+<div class="talk2"><div class="mas">👩🏾‍🍳</div><div class="bub dk">“Oya, my friend! 45 missions, plenty food, plenty gist. Make we chop life together!”<br><small>— Mama Put</small></div></div>
+<div class="cast" id="cast"></div>
+<input id="nick" maxlength="14" placeholder="Enter your nickname" autocomplete="off">
+<button class="btn gold" id="play">▶ PLAY NOW</button>
+<div class="pills"><button class="pill" id="tlb">🏆 Leaderboard</button><button class="pill" id="tfund">💚 Heart Fund</button></div>
+<div class="band"></div></div></div>
 <div class="scr" id="map">
-<div class="hdr"><h2>Choose your mission</h2><button class="ibtn" id="mhome">🏠</button></div>
+<div class="hdr"><h2>Your missions</h2><b id="mstat"></b></div>
+<div class="pills"><button class="pill" id="mhome">🏠 Home</button><button class="pill" id="mlb">🏆 Leaders</button><button class="pill" id="mfund">💚 Heart Fund</button></div>
 <div id="stages"></div>
 </div>
+<div class="scr" id="lb"><div class="hdr"><h2>🏆 Leaderboard</h2><button class="ibtn" id="lback">✕</button></div><p class="mute">Ranked by total Heart Points earned.</p><div id="lbl"></div></div>
+<div class="scr" id="fund"><div class="hdr"><h2>💚 Heart Fund</h2><button class="ibtn" id="fback">✕</button></div><p id="wal" style="font-weight:800"></p><p class="mute">Side quests: give the Heart Points you win to causes close to Naija’s heart. This is a game, so points are virtual and no real money is donated. To help for real, support a registered charity near you.</p><div id="fcards"></div></div>
 <div class="scr" id="game">
-<div class="hdr"><b id="stg"></b><span><button class="ibtn" id="sfxb">🔊</button> <button class="ibtn" id="musb">🎵</button> <button class="ibtn" id="pz">⏸</button></span></div>
+<div class="hdr"><b id="stg"></b><span><b id="lives"></b> <button class="ibtn" id="sfxb">🔊</button> <button class="ibtn" id="musb">🎵</button> <button class="ibtn" id="pz">⏸</button></span></div>
 <div class="talk"><div class="av" id="av"></div><div id="msg"></div></div>
 <div class="goals" id="goals"></div>
 <div class="stats"><span>Score <span id="sc">0</span></span><span>Moves <span id="mv">0</span></span></div>
 <div class="frame"><div id="board"></div></div>
+<div class="lf" id="lf"></div>
 </div>
 <div class="shout" id="shout"></div>
 <div class="osh" id="osh"></div>
@@ -134,12 +166,12 @@ const R=[
 "Detty December|Lagos|DJ Detty|🎧|Lagos dey vibe! Turn the music up!",
 "Independence Jubilee|Eagle Square, Abuja|Mama Naija|👩🏾‍🦳|One Nigeria, one big party. Finish strong!"
 ].map(x=>x.split('|'));
-const K=i=>i<14?6:i<28?7:8;
-const S=R.map(([n,loc,who,av,say],i)=>{const nk=K(i),sp=i%5==4,a=(i*3)%nk,b=(a+2+i%3)%nk,g={};g[a]=12+Math.floor(i*.2);if(!sp&&i%2)g[b]=7+Math.floor(i*.12);return{n,loc,who,av,say,g,sc:sp?1200+i*40:0,mv:22+Math.floor(i/4)+(sp?2:0),sp,nk}});
+const K=i=>i<10?6:i<22?7:8;
+const S=R.map(([n,loc,who,av,say],i)=>{const nk=K(i),sp=i%5==4,a=(i*3)%nk,b=(a+2+i%3)%nk,c=(a+4+i%2)%nk,g={};g[a]=12+Math.floor(i*.22);if(!sp){g[b]=7+Math.floor(i*.14);if(i>=20&&c!==a&&c!==b)g[c]=5+Math.floor(i*.1)}return{n,loc,who,av,say,g,sc:sp?1500+i*55:0,mv:20+Math.floor(i/5)+(sp?3:0),sp,nk}});
 const praise=['Correct!','Sweet die!','Omo!','E don happen!','No be small thing!','Oga at the top!'];
-let g=[],sp=[],nk=6,sel=-1,score=0,moves=0,cur=0,busy=false,paused=false,goals={},fresh=new Set(),pop=new Set(),bonusPts=0,prog={u:0,s:[]};
+let g=[],sp=[],nk=6,lf={s:0,k:0,m:0},smashing=false,bk='title',sel=-1,score=0,moves=0,cur=0,busy=false,paused=false,goals={},fresh=new Set(),pop=new Set(),bonusPts=0,prog={u:0,s:[],hp:0,tot:0,don:{},lives:5,lt:0,nm:''};
 const $=id=>document.getElementById(id);
-try{const p=JSON.parse(localStorage.getItem('naijaCrush'));if(p&&typeof p.u==='number')prog=p}catch(e){}
+try{const p=JSON.parse(localStorage.getItem('naijaCrush'));if(p&&typeof p.u==='number')prog=Object.assign(prog,p)}catch(e){}
 function save(){try{localStorage.setItem('naijaCrush',JSON.stringify(prog))}catch(e){}}
 const rnd=()=>Math.floor(Math.random()*nk);
 async function sleep(ms){await new Promise(r=>setTimeout(r,ms));while(paused)await new Promise(r=>setTimeout(r,100))}
@@ -169,17 +201,10 @@ $('musb').onclick=()=>{musOn=!musOn;$('musb').style.opacity=musOn?1:.4;music()};
 function ov(html,btns){const b=$('box');b.innerHTML=html;btns.forEach(([l,fn,alt])=>{const x=document.createElement('button');x.className='btn'+(alt?' alt':'');x.textContent=l;x.onclick=()=>{$('ov').classList.remove('on');fn()};b.appendChild(x)});$('ov').classList.add('on')}
 const goalTxt=s=>Object.keys(s.g).map(t=>T[t]+' ×'+s.g[t]).concat(s.sc?['⭐ '+s.sc+' pts']:[]).join('  ·  ')+'  ·  '+s.mv+' moves';
 /* ---------- screens ---------- */
-$('play').onclick=()=>{ac();music();renderMap();show('map')};
-$('mhome').onclick=()=>show('title');
-function renderMap(){const c=$('stages');c.innerHTML='';
-S.forEach((s,i)=>{const d=document.createElement('div'),lk=i>prog.u;d.className='st'+(lk?' lock':'');
-d.innerHTML='<div class="av">'+(lk?'🔒':s.av)+'</div><div><b>'+(i+1)+'. '+s.n+'</b><small>'+s.loc+' · '+s.who+'</small><br>'+(prog.s[i]?'⭐'.repeat(prog.s[i]):'<small>Not yet played</small>')+'</div>';
-if(!lk)d.onclick=()=>intro(i);c.appendChild(d)})}
-function intro(i){const s=S[i];ov('<div class="big">'+s.av+'</div><h2>'+s.who+'</h2><p>“'+s.say+'”</p><p><b>'+goalTxt(s)+'</b></p>',[['Let’s go! 🔥',()=>begin(i)],['Back',()=>show('map'),1]])}
 $('pz').onclick=()=>{if(busy&&!paused&&$('ov').classList.contains('on'))return;paused=true;music();
 ov('<div class="big">⏸</div><h2>Game paused</h2><p class="mute">Rest small, oga.</p>',[['▶ Resume',()=>{paused=false;music()}],['↻ Restart stage',()=>begin(cur),1],['🗺 Mission map',()=>{paused=false;renderMap();show('map');music()},1]])};
-function begin(i){cur=i;const s=S[i];goals={...s.g};nk=s.nk;score=0;moves=s.mv;sel=-1;paused=false;busy=false;fresh=new Set();pop=new Set();fill();if(s.sp)seed();
-$('av').textContent=s.av;$('stg').textContent='Stage '+(i+1)+': '+s.n;say(s.who+': Make we go!');show('game');render();music();shout('Stage '+(i+1)+': '+s.loc+' 🇳🇬')}
+function begin(i,r){cur=i;const s=S[i];goals={...s.g};nk=s.nk;lf={s:1,k:1,m:1};smashing=false;score=0;moves=s.mv;sel=-1;paused=false;busy=false;fresh=new Set();pop=new Set();fill();if(s.sp)seed();
+$('av').textContent=s.av;$('av').className='por sm';$('av').style.setProperty('--h',hue(i));$('stg').textContent='Stage '+(i+1)+': '+s.n;say(s.who+': '+(r||'Make we go!'));show('game');render();music();shout('Stage '+(i+1)+': '+s.loc+' 🇳🇬')}
 /* ---------- board ---------- */
 function fill(){g=[];sp=Array(N*N).fill(0);for(let r=0;r<N;r++)for(let c=0;c<N;c++){let v;do{v=rnd()}while((c>=2&&g[r*N+c-1]===v&&g[r*N+c-2]===v)||(r>=2&&g[(r-1)*N+c]===v&&g[(r-2)*N+c]===v));g[r*N+c]=v}if(!hasMove())fill()}
 function find(){const m=new Set();for(let r=0;r<N;r++)for(let c=0;c<N;c++){const v=g[r*N+c];if(v<0)continue;
@@ -192,15 +217,17 @@ const done=()=>Object.keys(goals).every(t=>goals[t]<=0)&&(!S[cur].sc||score>=S[c
 function say(t){$('msg').textContent=t}
 function render(){const b=$('board');b.innerHTML='';
 g.forEach((v,i)=>{const d=document.createElement('button');d.className='t c'+v+(sp[i]?' s'+sp[i]:'')+(i===sel?' sel':'')+(pop.has(i)?' pop':'')+(fresh.has(i)?' new':'');d.innerHTML=T[v]+(sp[i]?'<i>'+(sp[i]>1?'💥':'⚡')+'</i>':'');d.onclick=()=>tap(i);b.appendChild(d)});
-$('sc').textContent=score;$('mv').textContent=moves;
+$('sc').textContent=score;updLives();renderLf();$('mv').textContent=moves;
 const s=S[cur];$('goals').innerHTML=Object.keys(goals).map(t=>'<span class="chip'+(goals[t]<=0?' ok':'')+'">'+T[t]+' '+Math.max(0,goals[t])+'</span>').join('')+(s.sc?'<span class="chip'+(score>=s.sc?' ok':'')+'">⭐ '+Math.min(score,s.sc)+'/'+s.sc+'</span>':'')}
 async function tap(i){if(busy||paused)return;
+if(smashing){smashing=false;lf.k=0;busy=true;sp[i]=1;render();await cascade([i]);await after();return}
 if(sel<0){sel=i;sfx.pick();render();return}
 if(sel===i){sel=-1;render();return}
 if(!adj(sel,i)){sel=i;sfx.pick();render();return}
 busy=true;const a=sel;sel=-1;swap(a,i);
 if(!find().size&&!sp[a]&&!sp[i]){render();const e=$('board').children;e[a].classList.add('shake');e[i].classList.add('shake');sfx.bad();await sleep(260);swap(a,i);render();say('That one no work. Try another!');busy=false;return}
-moves--;render();await cascade([a,i]);
+moves--;render();await cascade([a,i]);await after()}
+async function after(){
 if(done()){await bonus();win()}
 else if(moves<=0){lose()}
 else{if(moves<=3)shout('Only '+moves+' move'+(moves>1?'s':'')+' left! Hustle! 😤');if(!hasMove()){say('No more moves o! Mixing am...');do{g.sort(()=>Math.random()-.5)}while(find().size||!hasMove());render()}busy=false}}
@@ -243,10 +270,80 @@ function oshey(t){const o=$('osh');o.textContent=t;o.classList.remove('go');void
 async function bonus(){bonusPts=0;if(moves<=0)return;oshey('Osheyyyy! 🔥');burst();sfx.oshey();say('Extra moves bonus!');await sleep(1000);
 let k=0;while(moves>0){moves--;score+=100;bonusPts+=100;sfx.tick(k++);say('Oshey! +100 for each extra move');render();await sleep(380)}
 oshey('Osheyyyy!!! 🇳🇬');burst();sfx.oshey();await sleep(1000)}
+const hue=i=>(i*47+20)%360;
+const por=(av,i,c)=>'<div class="por '+(c||'')+'" style="--h:'+hue(i)+'">'+av+'</div>';
+const bond=n=>['New friend','Friend 💚','Close friend 💚💚','Family 💚💚💚'][n||0];
+const nick=()=>prog.nm||'Player';
+/* lives */
+const REG=480000;
+function tick(){if(prog.lives>=5){prog.lt=0;return}if(!prog.lt)prog.lt=Date.now();const n=Math.floor((Date.now()-prog.lt)/REG);if(n>0){prog.lives=Math.min(5,prog.lives+n);prog.lt=prog.lives>=5?0:prog.lt+n*REG;save()}}
+function updLives(){tick();const e=$('lives');if(e)e.textContent='❤️'+prog.lives}
+function loseLife(){tick();if(prog.lives>=5)prog.lt=Date.now();prog.lives=Math.max(0,prog.lives-1);save()}
+function wait(){const t=Math.max(0,Math.ceil((prog.lt+REG-Date.now())/1000));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')}
+setInterval(()=>{updLives();if($('map').classList.contains('on'))mstat()},20000);
+/* lifelines */
+function renderLf(){const e=$('lf');if(!e)return;e.innerHTML='';
+[['🔀','Shuffle','s'],['🌶️','Pepper','k'],['➕5','+5 moves','m']].forEach(([ic,t,k])=>{const b=document.createElement('button');b.className='lfb'+(smashing&&k==='k'?' on':'');b.disabled=!lf[k];b.innerHTML=ic+'<small>'+t+(lf[k]?'':' ✓')+'</small>';b.onclick=()=>useLf(k);e.appendChild(b)})}
+function useLf(k){if(busy||paused||!lf[k])return;
+if(k==='s'){lf.s=0;do{g.sort(()=>Math.random()-.5)}while(find().size||!hasMove());shout('SHUFFLE! 🔀');sfx.pick()}
+if(k==='m'){lf.m=0;moves+=5;shout('+5 MOVES! Oshey! 🎉');sfx.win()}
+if(k==='k'){smashing=!smashing;shout(smashing?'Tap a tile for PEPPER! 🌶️':'Pepper cancelled')}
+render()}
+/* nav */
+function mstat(){$('mstat').textContent='❤️'+prog.lives+(prog.lives<5?' ('+wait()+')':'')+'  💚'+prog.hp}
+$('cast').innerHTML=[[0,'Mama Put','Food seller'],[1,'Mallam Musa','Suya master'],[3,'Aunty Ngozi','Market queen'],[2,'Driver Ade','Danfo king'],[9,'Chief Iyabo','Party boss']].map(([i,n,r])=>'<div class="cm">'+por(S[i].av,i)+'<b>'+n+'</b><small>'+r+'</small></div>').join('');
+for(let i=0;i<9;i++){const f=document.createElement('span');f.className='fl';f.textContent=T[i%6];f.style.left=(i*11+3)+'%';f.style.animationDelay=(i*.8)+'s';$('title').firstChild.appendChild(f)}
+$('nick').value=prog.nm||'';
+$('play').onclick=()=>{prog.nm=$('nick').value.trim().slice(0,14)||prog.nm||'Player'+Math.floor(100+Math.random()*900);save();ac();music();renderMap();show('map')};
+$('mhome').onclick=()=>show('title');
+$('tlb').onclick=()=>openLB('title');$('mlb').onclick=()=>openLB('map');
+$('tfund').onclick=()=>openFund('title');$('mfund').onclick=()=>openFund('map');
+$('lback').onclick=()=>show(bk);$('fback').onclick=()=>{if(bk==='map')renderMap();show(bk)};
+function renderMap(){const c=$('stages');c.innerHTML='';updLives();mstat();
+S.forEach((s,i)=>{const d=document.createElement('div'),lk=i>prog.u;d.className='st'+(lk?' lock':'');
+d.innerHTML=(lk?'<div class="por sm" style="--h:0;filter:grayscale(1)">🔒</div>':por(s.av,i,'sm'))+'<div><b>'+(i+1)+'. '+s.n+(s.sp?' ⚡':'')+'</b><small>'+s.loc+' · '+s.who+'</small><br><small>'+(lk?'Locked':bond(prog.s[i]))+(prog.s[i]?'  '+'⭐'.repeat(prog.s[i]):'')+'</small></div>';
+if(!lk)d.onclick=()=>intro(i);c.appendChild(d)})}
+function intro(i){const s=S[i];tick();
+if(prog.lives<=0){ov('<div class="big">💔</div><h2>No lives left</h2><p>Rest small, '+nick()+'. Next life in <b>'+wait()+'</b>.</p>',[['Back',()=>{renderMap();show('map')},1]]);return}
+const st=prog.s[i]||0,pv=i?S[i-1].who:'',l1=st?'Welcome back, '+nick()+'! '+bond(st)+' — I dey happy to see you.':(i?pv+' talk well well about you, '+nick()+'!':'Hey '+nick()+'! Welcome to Naija!');
+ov(por(s.av,i,'big')+'<h2>'+s.who+'</h2><small class="mute">'+s.loc+' · '+bond(st)+'</small><div class="bub">'+l1+'</div><div class="bub">'+s.say+'<br><b>'+goalTxt(s)+'</b></div>',
+[['I dey for you! 💪',()=>begin(i,'Ah, na you be my person! 💚')],['Back',()=>show('map'),1]])}
+/* leaderboard */
+let dbx=null,uid=null;
+(async()=>{try{if(window.claude&&claude.use){dbx=await claude.use('db');const u=await claude.use('user');if(u&&u.id)uid=await u.id()}}catch(e){}})();
+const mine=()=>({name:nick(),tot:prog.tot,m:prog.s.filter(Boolean).length,don:Object.values(prog.don).reduce((a,b)=>a+b,0),ts:Date.now()});
+async function syncLB(){if(!dbx||!uid)return;try{await dbx.doc('lb/'+uid).set(mine())}catch(e){}}
+async function openLB(f){bk=f;show('lb');$('lbl').innerHTML='<p class="mute">Loading…</p>';await syncLB();renderLB()}
+async function renderLB(){const c=$('lbl');let rows=null;
+if(dbx){try{const sn=await dbx.collection('lb').orderBy('tot','desc').limit(20).get();rows=sn.docs.map(d=>({id:d.id,...d.data()}))}catch(e){}}
+c.innerHTML='';
+if(!rows||!rows.length){c.innerHTML='<p class="mute">The shared board is not available here, so this shows your own best on this device. Win missions to climb!</p>';rows=[{id:'me',...mine()}]}
+rows.forEach((r,i)=>{const d=document.createElement('div');d.className='lbr'+(r.id===uid||r.id==='me'?' me':'');
+d.innerHTML='<b class="rk">'+(['🥇','🥈','🥉'][i]||(i+1))+'</b><span class="nm"></span><span class="pts"></span>';
+d.querySelector('.nm').textContent=(r.name||'Player')+' · '+(r.m||0)+' missions · 💚 given '+(r.don||0);d.querySelector('.pts').textContent=(r.tot||0).toLocaleString();c.appendChild(d)})}
+/* heart fund */
+const Q=[['🏠','Hope Orphanage Home','Meals, school fees and warm beds for children in care.',2000,'The children sing your name tonight. Thank you!'],
+['🌱','New Dawn Recovery','Counselling, treatment support and job training for people rebuilding their lives after addiction. Recovery is possible, and nobody has to do it alone.',3000,'Today, a new life begins. Thank you for believing in them!'],
+['📚','Girl-Child Scholarship','School fees, books and uniforms for girls with big dreams.',2500,'A classroom is full because of you!'],
+['💧','Clean Water Project','Boreholes so whole villages can drink safe water.',2500,'The tap is running. Thank you!'],
+['🩺','Free Health Outreach','Free check-ups and medicines for market women and elders.',3500,'Mama said: “God bless you, my child!”']];
+function openFund(f){bk=f;renderFund();show('fund')}
+function renderFund(){$('wal').textContent='Your wallet: 💚 '+prog.hp+' Heart Points';const c=$('fcards');c.innerHTML='';
+Q.forEach(([ic,n,d,goal,th],k)=>{const got=prog.don[k]||0,full=got>=goal,el=document.createElement('div');el.className='fq';
+el.innerHTML='<h3>'+ic+' '+n+(full?' 🏅':'')+'</h3><small class="mute">'+d+'</small><div class="pb"><div style="width:'+Math.min(100,got/goal*100)+'%"></div></div><small><b>'+got+' / '+goal+'</b></small>'+(full?'<div class="bub">“'+th+'”</div>':'');
+if(!full)[100,500].forEach(a=>{const b=document.createElement('button');b.className='pill';b.textContent='Give '+a;b.disabled=prog.hp<1;b.onclick=()=>give(k,a);el.appendChild(b)});
+c.appendChild(el)})}
+function give(k,a){const goal=Q[k][3],x=Math.min(a,prog.hp,goal-(prog.don[k]||0));if(x<=0)return;
+prog.hp-=x;prog.don[k]=(prog.don[k]||0)+x;save();syncLB();sfx.win();
+if(prog.don[k]>=goal){shout('QUEST COMPLETE! You don change lives! 🏅');burst()}else shout('💚 +'+x+' for '+Q[k][1]);renderFund()}
+/* endings */
 function win(){const left=bonusPts/100,st=left>=8?3:left>=4?2:1,s=S[cur];
-prog.s[cur]=Math.max(prog.s[cur]||0,st);if(cur+1>prog.u&&cur+1<S.length)prog.u=cur+1;save();sfx.win();burst();shout('MISSION DON LAND! 🏆');
-const last=cur===S.length-1;
-ov('<div class="big">'+s.av+'</div><h2>'+(last?'Naija Champion! 🏆':'Mission complete! 🎉')+'</h2><p style="font-size:28px">'+'⭐'.repeat(st)+'</p><p>“Oshey! Thank you o, you try well well!”</p><p class="mute">Score '+score+(bonusPts?' (includes '+bonusPts+' extra-move bonus)':'')+'</p>',
-(last?[]:[['Next mission ➜',()=>intro(cur+1)]]).concat([['Mission map',()=>{renderMap();show('map')},1]]))}
-function lose(){sfx.lose();const s=S[cur];ov('<div class="big">😅</div><h2>Ehn ehn, moves don finish</h2><p>“'+s.who+': No wahala, try again!”</p>',[['Try again',()=>begin(cur)],['Mission map',()=>{renderMap();show('map')},1]])}
+prog.s[cur]=Math.max(prog.s[cur]||0,st);if(cur+1>prog.u&&cur+1<S.length)prog.u=cur+1;
+const earn=Math.floor(score/10)+st*25;prog.hp+=earn;prog.tot+=earn;save();syncLB();sfx.win();burst();shout('MISSION DON LAND! 🏆');
+const last=cur===S.length-1,th=['Thank you o!','You try well well! 💚','Oshey! You are family now! 🇳🇬'][st-1];
+ov(por(s.av,cur,'big')+'<h2>'+(last?'Naija Champion! 🏆':'Mission complete! 🎉')+'</h2><div class="bub">“'+th+'”<br><small>— '+s.who+'</small></div><p style="font-size:26px;margin:4px">'+'⭐'.repeat(st)+'</p><p><b>+'+earn+' 💚 Heart Points</b></p><p class="mute">Bond: '+bond(prog.s[cur])+(bonusPts?' · includes '+bonusPts+' extra-move bonus':'')+'</p>',
+(last?[]:[['Next mission ➜',()=>intro(cur+1)]]).concat([['💚 Heart Fund',()=>openFund('map'),1],['Mission map',()=>{renderMap();show('map')},1]]))}
+function lose(){sfx.lose();const s=S[cur];
+const fin=()=>{loseLife();ov('<div class="big">😅</div><h2>Moves don finish</h2><div class="bub">“No wahala, try again!” <small>— '+s.who+'</small></div><p>You lost a life ❤️ ('+prog.lives+' left)</p>',(prog.lives>0?[['Try again',()=>begin(cur)]]:[]).concat([['Mission map',()=>{renderMap();show('map')},1]]))};
+if(lf.m)ov('<div class="big">🙏</div><h2>Out of moves!</h2><p>Use your ➕5 moves lifeline to keep going?</p>',[['➕5 moves lifeline',()=>{lf.m=0;moves+=5;busy=false;render()}],['Give up',fin,1]]);else fin()}
 </script></body></html>
