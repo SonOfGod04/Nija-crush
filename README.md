@@ -12,4 +12,6 @@ Single-file, no build step, no dependencies. Progress is saved in the browser (l
 ## Play locally
 Open `index.html` in any modern browser.
 
+You can now compete with friends on a leaderboard and also share hearts to win other players help to enable play the game well
+
 Get playing, now!
