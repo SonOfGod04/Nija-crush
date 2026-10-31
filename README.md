@@ -25,16 +25,23 @@ Option B, from your computer:
 1. Install Node.js, then run `npm i -g vercel`.
 2. In this folder run `vercel`, answer the prompts, then `vercel --prod`.
 
-## 3. Connect Supabase (leaderboard and Help Exchange)
-1. In your Supabase project open SQL Editor, paste the contents of `supabase.sql` and run it.
+## 3. Connect Supabase (accounts, leaderboard, Help Exchange)
+1. In your Supabase project open SQL Editor, paste the contents of `supabase.sql` and run it. It is safe to run again later.
 2. Open Project Settings > API and copy the **anon public** key. Never use the `service_role` key.
-3. Paste the key into `config.js`, commit and push. Vercel redeploys and the leaderboard and Help Exchange switch on.
+3. Paste the key into `config.js`, commit and push. Vercel redeploys.
+4. Open Authentication > Providers and keep **Email** switched on. Under Authentication > URL Configuration set the Site URL to your Vercel address, so confirmation emails link back to the game.
+5. Keep "Confirm email" on so each account needs a real inbox. Turn it off only while testing.
+
+### How accounts work
+- Players create an account with an email, a password and a unique nickname, or play as a guest (guests are not on the leaderboard or Help Exchange).
+- Progress is saved to the account, so it follows the player to any device.
+- Each player can only change their own rows, and only the receiver can claim a gift.
+- Only one device can be signed in to an account at a time. Signing in elsewhere signs the older device out within about a minute.
+- Nobody can stop a person from handing their password to a friend, but the one-device rule makes sharing awkward.
+- Points and scores are still calculated in the browser, so a determined player could cheat. For a stricter game, move scoring and gifting into Supabase database functions.
 
 ## Alternative: GitHub Pages
 Settings > Pages > `main` branch, root folder. The same files work there.
-
-## Security note
-The game keeps each player's points in their own browser, and the database policies are open to the public key so that players can post scores and gifts. A determined player could therefore cheat. That is fine for a friendly game. For a stricter version, add Supabase Auth and move gifting into a database function.
 
 ## Culture facts
 Facts shown after each mission live in the `C` list in `index.html` (name|area|fact). Entries with an empty fact show a placeholder. Most facts come from the Nigerian Tourism Development Authority festival list and common knowledge; please have a member of each community review their entry before you promote the game.
