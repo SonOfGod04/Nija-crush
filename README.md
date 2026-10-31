@@ -11,16 +11,30 @@ A Nigerian-themed match-3 game with 250 missions. Each mission visits a differen
 
 Single file, no build step. Progress is saved in the browser.
 
-## 1. Deploy on GitHub Pages
-1. Create a repository and upload `index.html` and this README.
-2. Settings > Pages > choose the `main` branch and root folder > Save.
-3. The game is live at `https://<your-username>.github.io/<repo-name>/`.
+## 1. Put it on GitHub
+Create a repository and upload every file in this folder: `index.html`, `config.js`, `vercel.json`, `supabase.sql` and this README.
 
-## 2. Connect Supabase (leaderboard and Help Exchange)
+## 2. Deploy on Vercel (recommended)
+Option A, from GitHub:
+1. Sign in at vercel.com with GitHub.
+2. Add New > Project, then import your repository.
+3. Framework Preset: **Other**. Leave Build Command and Output Directory empty. Click Deploy.
+4. Your game goes live at `https://<project-name>.vercel.app`. Every push to GitHub redeploys it.
+
+Option B, from your computer:
+1. Install Node.js, then run `npm i -g vercel`.
+2. In this folder run `vercel`, answer the prompts, then `vercel --prod`.
+
+## 3. Connect Supabase (leaderboard and Help Exchange)
 1. In your Supabase project open SQL Editor, paste the contents of `supabase.sql` and run it.
-2. Open Project Settings > API and copy the **anon public** key. Never use the `service_role` key in the game.
-3. In `index.html`, find the line starting `const SB={url:` and paste the key between the empty quotes after `key:`.
-4. Commit the change. The leaderboard and Help Exchange switch on.
+2. Open Project Settings > API and copy the **anon public** key. Never use the `service_role` key.
+3. Paste the key into `config.js`, commit and push. Vercel redeploys and the leaderboard and Help Exchange switch on.
+
+## Alternative: GitHub Pages
+Settings > Pages > `main` branch, root folder. The same files work there.
 
 ## Security note
 The game keeps each player's points in their own browser, and the database policies are open to the public key so that players can post scores and gifts. A determined player could therefore cheat. That is fine for a friendly game. For a stricter version, add Supabase Auth and move gifting into a database function.
+
+## Culture facts
+Facts shown after each mission live in the `C` list in `index.html` (name|area|fact). Entries with an empty fact show a placeholder. Most facts come from the Nigerian Tourism Development Authority festival list and common knowledge; please have a member of each community review their entry before you promote the game.
