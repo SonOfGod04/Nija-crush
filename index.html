@@ -73,7 +73,7 @@ body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--
 .cm{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px}.cm small{opacity:.75;font-size:10px}
 .por{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;background:radial-gradient(circle at 30% 25%,hsl(var(--h) 85% 78%),hsl(var(--h) 65% 42%));border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.35);flex:none;margin:0 auto 4px}
 .por.sm{width:46px;height:46px;font-size:26px;margin:0}.por.big{width:92px;height:92px;font-size:52px}.cm .por{width:54px;height:54px;font-size:30px}
-#nick{width:100%;padding:12px;border-radius:12px;border:2px solid #ffd34d;background:rgba(255,255,255,.95);color:#10301b;font-size:16px;text-align:center;margin:6px 0}
+#nick,#em,#pw{width:100%;padding:12px;border-radius:12px;border:2px solid #ffd34d;background:rgba(255,255,255,.95);color:#10301b;font-size:16px;text-align:center;margin:6px 0}
 .btn.gold{background:linear-gradient(180deg,#ffd34d,#f2a900);color:#3a2600;box-shadow:0 5px 0 #a87400;font-size:22px;padding:14px 38px;animation:pulse 1.6s infinite}
 @keyframes pulse{50%{transform:scale(1.05)}}
 .pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
@@ -97,6 +97,8 @@ select{width:100%;padding:10px;border-radius:10px;margin:6px 0;border:1px solid 
 <div class="talk2"><div class="mas">👩🏾‍🍳</div><div class="bub dk">“Oya, my friend! 250 missions, plenty culture, plenty gist. Make we chop life together!”<br><small>— Mama Naija</small></div></div>
 <div class="cast" id="cast"></div>
 <input id="nick" maxlength="14" placeholder="Enter your nickname" autocomplete="off">
+<div id="authbox" style="display:none"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password"><div class="pills"><button class="pill" id="si">Sign in</button><button class="pill" id="su">Create account</button></div><p id="amsg" class="mute" style="color:#ffe9a0"></p></div>
+<div id="who" style="display:none"></div>
 <button class="btn gold" id="play">▶ PLAY NOW</button>
 <div class="pills"><button class="pill" id="tlb">🏆 Leaderboard</button><button class="pill" id="tfund">💚 Heart Fund</button></div>
 <div class="band"></div></div></div>
@@ -505,7 +507,7 @@ function mstat(){$('mstat').textContent='❤️'+prog.lives+(prog.lives<5?' ('+w
 $('cast').innerHTML=[0,1,2,3,4].map(i=>'<div class="cm">'+por(S[i].av,i)+'<b>'+S[i].who+'</b><small>'+S[i].loc.split(',')[0]+'</small></div>').join('');
 for(let i=0;i<9;i++){const f=document.createElement('span');f.className='fl';f.textContent=T[i%6];f.style.left=(i*11+3)+'%';f.style.animationDelay=(i*.8)+'s';$('title').firstChild.appendChild(f)}
 $('nick').value=prog.nm||'';
-$('play').onclick=()=>{prog.nm=$('nick').value.trim().slice(0,14)||prog.nm||'Player'+Math.floor(100+Math.random()*900);save();ac();music();renderMap();show('map')};
+$('play').onclick=()=>{if(!auth)prog.nm=$('nick').value.trim().slice(0,14)||prog.nm||'Guest'+Math.floor(100+Math.random()*900);save();ac();music();renderMap();show('map')};
 $('mhome').onclick=()=>show('title');
 $('tlb').onclick=()=>openLB('title');$('mlb').onclick=()=>openLB('map');
 $('tfund').onclick=()=>openFund('title');$('mfund').onclick=()=>openFund('map');
@@ -513,8 +515,10 @@ setInterval(()=>{if($('lb').classList.contains('on')&&dbx)renderLB()},15000);
 $('lback').onclick=()=>show(bk);$('fback').onclick=()=>{if(bk==='map')renderMap();show(bk)};
 const SB={url:'https://iarezdekrbttimskdtsx.supabase.co',key:(window.NAIJA_CONFIG&&window.NAIJA_CONFIG.supabaseKey)||''};
 const sbOn=()=>!!SB.key;
-async function sb(path,o){o=o||{};const h={apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json'};if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
+let auth=null;try{auth=JSON.parse(localStorage.getItem('naijaAuth'))}catch(e){}
+async function sb(path,o){o=o||{};const h={apikey:SB.key,Authorization:'Bearer '+await tok(),'Content-Type':'application/json'};if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
 if(!prog.pid){prog.pid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'p'+Math.random().toString(36).slice(2)+Date.now();save()}
+if(auth)prog.pid=auth.uid;
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 $('mhelp').onclick=()=>openHelp('map');$('hback').onclick=()=>show(bk);
 function renderMap(){const c=$('stages');c.innerHTML='';updLives();mstat();const top=Math.min(S.length-1,prog.u+2);
@@ -575,10 +579,11 @@ const pb=el('div','pb'),f=el('div');f.style.width=Math.min(100,sum/r.need*100)+'
 if(mineF){const x=el('button','pill','Cancel request');x.onclick=async()=>{try{await sb('help_requests?id=eq.'+r.id,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({open:false})})}catch(e){}renderHelp()};b.appendChild(x)}
 else[50,100].forEach(a=>{const x=el('button','pill','Give '+a);x.disabled=prog.hp<a;x.onclick=()=>giveHelp(r,a);b.appendChild(x)});return b}
 async function giveHelp(r,a){if(prog.hp<a)return;prog.hp-=a;save();
-try{await sb('gifts',{method:'POST',prefer:'return=minimal',body:JSON.stringify({req_id:r.id,to_pid:r.pid,from_name:nick(),amount:a})});prog.don.h=(prog.don.h||0)+a;save();syncLB();shout('💚 You gave '+a+' to '+r.name+'. Oshey!');sfx.win();burst()}
+try{await sb('gifts',{method:'POST',prefer:'return=minimal',body:JSON.stringify({req_id:r.id,to_pid:r.pid,from_pid:prog.pid,from_name:nick(),amount:a})});prog.don.h=(prog.don.h||0)+a;save();syncLB();shout('💚 You gave '+a+' to '+r.name+'. Oshey!');sfx.win();burst()}
 catch(e){prog.hp+=a;save();shout('Could not send. Try again')}renderHelp()}
 async function renderHelp(){const c=$('hcards');
 if(!sbOn()){c.innerHTML='<p class="mute">The Help Exchange runs in the online version of the game, once it is connected to its server.</p>';return}
+if(!auth){c.innerHTML='<p class="mute">Please sign in on the home screen to use the Help Exchange.</p>';return}
 c.innerHTML='<p class="mute">Loading…</p>';
 try{
 const gs=await sb('gifts?select=amount,from_name&to_pid=eq.'+prog.pid+'&claimed=eq.false');
@@ -601,7 +606,7 @@ catch(e){c.innerHTML='<p class="mute">Could not reach the server. Check your con
 let dbx=null,uid=null;
 (async()=>{try{if(window.claude&&claude.use){dbx=await claude.use('db');const u=await claude.use('user');if(u&&u.id)uid=await u.id()}}catch(e){}})();
 const mine=()=>({name:nick(),tot:prog.tot,vp:prog.vp,m:prog.s.filter(Boolean).length,don:Object.values(prog.don).reduce((a,b)=>a+b,0),ts:Date.now()});
-async function syncLB(){if(sbOn()){try{const{ts,...o}=mine();await sb('players',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:JSON.stringify({id:prog.pid,...o})})}catch(e){}return}
+async function syncLB(){if(sbOn()){if(!auth)return;try{const{ts,...o}=mine();await sb('players',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:JSON.stringify({id:auth.uid,...o,save:snap()})})}catch(e){}return}
 if(!dbx||!uid)return;try{await dbx.doc('lb/'+uid).set(mine())}catch(e){}}
 async function openLB(f){bk=f;show('lb');$('lbl').innerHTML='<p class="mute">Loading…</p>';await syncLB();renderLB()}
 async function renderLB(){const c=$('lbl');let rows=null;
@@ -611,7 +616,8 @@ c.innerHTML='';
 if(!rows||!rows.length){c.innerHTML='<p class="mute">The shared board is not available here, so this shows your own best on this device. Win missions to climb!</p>';rows=[{id:'me',...mine()}]}
 rows.forEach((r,i)=>{const d=document.createElement('div');d.className='lbr'+(r.id===uid||r.id===prog.pid||r.id==='me'?' me':'');
 d.innerHTML='<b class="rk">'+(['🥇','🥈','🥉'][i]||(i+1))+'</b><span class="nm"></span><span class="pts"></span>';
-d.querySelector('.nm').textContent=(r.name||'Player')+' · '+(r.m||0)+' missions · 💚 given '+(r.don||0)+' · 🕊️ '+(r.vp||0);d.querySelector('.pts').textContent=(r.tot||0).toLocaleString();c.appendChild(d)})}
+d.querySelector('.nm').textContent=(r.name||'Player')+' · '+(r.m||0)+' missions · 💚 given '+(r.don||0)+' · 🕊️ '+(r.vp||0);d.querySelector('.pts').textContent=(r.tot||0).toLocaleString();c.appendChild(d)});
+if(sbOn()&&!auth)c.appendChild(el('p','mute','Sign in on the home screen to put your name on the board.'))}
 /* heart fund */
 const Q=[['🏠','Hope Orphanage Home','Meals, school fees and warm beds for children in care.',2000,'The children sing your name tonight. Thank you!'],
 ['🌱','New Dawn Recovery','Counselling, treatment support and job training for people rebuilding their lives after addiction. Recovery is possible, and nobody has to do it alone.',3000,'Today, a new life begins. Thank you for believing in them!'],
@@ -637,4 +643,28 @@ ov(por(s.av,cur,'big')+'<h2>'+(last?'Naija Champion! 🏆':'Mission complete! �
 function lose(){sfx.lose();const s=S[cur];
 const fin=()=>{loseLife();ov('<div class="big">😅</div><h2>Moves don finish</h2><div class="bub">“No wahala, try again!” <small>— '+s.who+'</small></div><p>You lost a life ❤️ ('+prog.lives+' left)</p>',(prog.lives>0?[['Try again',()=>begin(cur)]]:[]).concat([['Mission map',()=>{renderMap();show('map')},1]]))};
 if(lf.m)ov('<div class="big">🙏</div><h2>Out of moves!</h2><p>Use your ➕5 moves lifeline to keep going?</p>',[['➕5 moves lifeline',()=>{lf.m=0;moves+=5;busy=false;render()}],['Give up',fin,1]]);else fin()}
+/* sign-in */
+const authSave=()=>{try{if(auth)localStorage.setItem('naijaAuth',JSON.stringify(auth));else localStorage.removeItem('naijaAuth')}catch(e){}};
+async function au(path,body){const r=await fetch(SB.url+'/auth/v1/'+path,{method:'POST',headers:{apikey:SB.key,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.msg||j.error_description||j.message||'Something went wrong');return j}
+function setAuth(j){const u=j.user||{},sid=(auth&&auth.sid)||Math.random().toString(36).slice(2)+Date.now().toString(36);auth={access:j.access_token,refresh:j.refresh_token,uid:u.id,email:u.email,name:(u.user_metadata&&u.user_metadata.name)||(auth&&auth.name)||'',sid,exp:Date.now()+((j.expires_in||3600)-60)*1000};prog.pid=auth.uid;authSave();save()}
+async function tok(){if(auth&&Date.now()>auth.exp){try{setAuth(await au('token?grant_type=refresh_token',{refresh_token:auth.refresh}))}catch(e){auth=null;authSave()}}return auth?auth.access:SB.key}
+const snap=()=>({u:prog.u,s:prog.s,hp:prog.hp,tot:prog.tot,don:prog.don,vp:prog.vp,lives:prog.lives});
+function amsg(t){$('amsg').textContent=t}
+async function loadProfile(force){try{const r=await sb('players?select=name,tot,save&id=eq.'+auth.uid);
+if(r&&r[0]){prog.nm=r[0].name;const sv=r[0].save;if(sv&&(force||(sv.tot||0)>=prog.tot))Object.assign(prog,{u:0,s:[],hp:0,tot:0,don:{},vp:0},sv,{pid:auth.uid,nm:r[0].name});else if(sv)syncLB()}
+else{prog.nm=auth.name||prog.nm||'Player';const{ts,...o}=mine();await sb('players',{method:'POST',prefer:'return=minimal',body:JSON.stringify({id:auth.uid,...o,save:snap()})})}
+if(force)await sb('players?id=eq.'+auth.uid,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({sid:auth.sid})})}catch(e){}save()}
+async function doSignin(){const e=$('em').value.trim(),p=$('pw').value;if(!e||p.length<6){amsg('Enter your email and a password of 6+ characters.');return}
+amsg('Signing in…');try{auth=null;setAuth(await au('token?grant_type=password',{email:e,password:p}));await loadProfile(true);renderAuth();amsg('');shout('Welcome, '+nick()+'! 💚')}catch(x){auth=null;amsg(x.message)}}
+async function doSignup(){const e=$('em').value.trim(),p=$('pw').value,n=$('nick').value.trim();
+if(!/^[A-Za-z0-9 .-]{2,14}$/.test(n)){amsg('Pick a nickname of 2 to 14 letters, numbers, spaces, dots or hyphens.');return}
+if(!e||p.length<6){amsg('Enter your email and a password of 6+ characters.');return}
+amsg('Creating account…');try{const t=await sb('players?select=id&name=ilike.'+encodeURIComponent(n)+'&limit=1');if(t&&t.length){amsg('That nickname is taken. Try another.');return}
+const j=await au('signup',{email:e,password:p,data:{name:n}});
+if(j.access_token){auth=null;prog.nm=n;setAuth(j);await loadProfile(true);renderAuth();amsg('');shout('Account created! 🎉')}else amsg('Account created! Check your email to confirm it, then sign in.')}catch(x){amsg(x.message)}}
+function renderAuth(){const on=sbOn();$('authbox').style.display=on&&!auth?'block':'none';$('who').style.display=on&&auth?'block':'none';$('nick').style.display=auth?'none':'block';
+if(on&&auth){const w=$('who');w.innerHTML='';w.appendChild(el('p','','Signed in as '+nick()+' ✅'));const b=el('button','pill','Sign out');b.onclick=()=>{auth=null;authSave();try{localStorage.removeItem('naijaCrush')}catch(e){}location.reload()};w.appendChild(b)}}
+async function chk(){if(!auth)return;try{const r=await sb('players?select=sid&id=eq.'+auth.uid);if(r&&r[0]&&r[0].sid&&r[0].sid!==auth.sid){auth=null;authSave();try{localStorage.removeItem('naijaCrush')}catch(e){}ov('<div class="big">🔒</div><h2>Signed out</h2><p>This account was opened on another device.</p>',[['OK',()=>location.reload()]])}}catch(e){}}
+$('si').onclick=doSignin;$('su').onclick=doSignup;renderAuth();
+if(auth){loadProfile(false).then(()=>{renderAuth();chk()});setInterval(chk,60000)}
 </script></body></html>
