@@ -88,12 +88,13 @@ body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--
 .fq{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px;margin:10px 0}
 .fq h3{margin:0 0 4px}.pb{height:10px;background:var(--bd);border-radius:6px;overflow:hidden;margin:8px 0}.pb div{height:100%;background:linear-gradient(90deg,#14b46c,#f2a900)}
 .fq .pill{padding:6px 12px}.fq .pill:disabled{opacity:.4}
+select{width:100%;padding:10px;border-radius:10px;margin:6px 0;border:1px solid var(--bd);background:var(--card);color:var(--ink);font-size:15px}
 </style></head><body>
 <div class="scr on" id="title"><div class="hero">
 <div class="band"></div>
 <div class="kick">🇳🇬 THE NAIJA PUZZLE ADVENTURE</div>
 <div class="logo">NAIJA<br>CRUSH</div>
-<div class="talk2"><div class="mas">👩🏾‍🍳</div><div class="bub dk">“Oya, my friend! 45 missions, plenty food, plenty gist. Make we chop life together!”<br><small>— Mama Put</small></div></div>
+<div class="talk2"><div class="mas">👩🏾‍🍳</div><div class="bub dk">“Oya, my friend! 250 missions, plenty culture, plenty gist. Make we chop life together!”<br><small>— Mama Naija</small></div></div>
 <div class="cast" id="cast"></div>
 <input id="nick" maxlength="14" placeholder="Enter your nickname" autocomplete="off">
 <button class="btn gold" id="play">▶ PLAY NOW</button>
@@ -101,11 +102,12 @@ body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--
 <div class="band"></div></div></div>
 <div class="scr" id="map">
 <div class="hdr"><h2>Your missions</h2><b id="mstat"></b></div>
-<div class="pills"><button class="pill" id="mhome">🏠 Home</button><button class="pill" id="mlb">🏆 Leaders</button><button class="pill" id="mfund">💚 Heart Fund</button></div>
+<div class="pills"><button class="pill" id="mhome">🏠 Home</button><button class="pill" id="mlb">🏆 Leaders</button><button class="pill" id="mfund">💚 Heart Fund</button><button class="pill" id="mhelp">🤝 Help</button></div>
 <div id="stages"></div>
 </div>
 <div class="scr" id="lb"><div class="hdr"><h2>🏆 Leaderboard</h2><button class="ibtn" id="lback">✕</button></div><p class="mute">Ranked by total Heart Points earned.</p><div id="lbl"></div></div>
 <div class="scr" id="fund"><div class="hdr"><h2>💚 Heart Fund</h2><button class="ibtn" id="fback">✕</button></div><p id="wal" style="font-weight:800"></p><p class="mute">Side quests: give the Heart Points you win to causes close to Naija’s heart. This is a game, so points are virtual and no real money is donated. To help for real, support a registered charity near you.</p><div id="fcards"></div></div>
+<div class="scr" id="help"><div class="hdr"><h2>🤝 Help Exchange</h2><button class="ibtn" id="hback">✕</button></div><p class="mute">Share, don’t beg: ask honestly when you truly need help, and give kindly when you can. Your Heart Points can lift another player.</p><div id="hcards"></div></div>
 <div class="scr" id="game">
 <div class="hdr"><b id="stg"></b><span><b id="lives"></b> <button class="ibtn" id="sfxb">🔊</button> <button class="ibtn" id="musb">🎵</button> <button class="ibtn" id="pz">⏸</button></span></div>
 <div class="talk"><div class="av" id="av"></div><div id="msg"></div></div>
@@ -117,59 +119,268 @@ body{background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;color:var(--
 <div class="shout" id="shout"></div>
 <div class="osh" id="osh"></div>
 <div class="ov" id="ov"><div class="box" id="box"></div></div>
+<script src="config.js"></script>
 <script>
 const N=8,T=['🍚','🍢','🍌','🍩','🌽','🍹','🥜','🍠'];
-const R=[
-"Mama Put’s Lunch Rush|Yaba, Lagos|Mama Put|👩🏾‍🍳|Customers don full my shop. Help me serve!",
-"Suya Night|Wuse, Abuja|Mallam Musa|👨🏿‍🍳|Suya fire dey hot tonight!",
-"Danfo Go-Slow|Oshodi, Lagos|Driver Ade|🧔🏾|Conductor don run! Keep passengers happy.",
-"Onitsha Market Hustle|Onitsha, Anambra|Aunty Ngozi|👵🏾|Biggest market in West Africa dey call!",
-"Durbar Festival|Kano|Alhaji Bello|👴🏿|The horsemen are coming. Honour the Emir!",
-"Eyo Festival|Lagos Island|Eyo Masquerade|🎭|White-robed Eyo dey dance, join the parade!",
-"Osun Grove|Osogbo, Osun|Priestess Osun|🧕🏾|Bring offerings to the sacred river.",
-"Ojude Oba|Ijebu-Ode, Ogun|Baba Ijebu|🧓🏿|Horses and agbada everywhere. Dress well!",
-"Egungun Night|Oyo|Elder Egungun|🎭|Our ancestors dey visit. Feast with them!",
-"Owambe Grand|Ibadan|Chief Iyabo|👸🏾|My daughter’s wedding no fit fail!",
-"New Yam Festival|Awka, Anambra|Eze Nwa|🤴🏿|First yam of the season, give thanks!",
-"Mmanwu Masquerades|Enugu|Mazi Okafor|🎭|Masquerade dey come, clear the way!",
-"Nri Heritage|Anambra|Eze Nri|👑|Ancient Igbo kingdom stories dey sweet.",
-"Calabar Carnival|Calabar, Cross River|Efik Queen|💃🏾|Africa’s biggest street party. Dance with me!",
-"Ekombi Dance|Uyo, Akwa Ibom|Ibibio Dancer|💃🏿|Hips and drums, make we shake!",
-"Boat Regatta|Yenagoa, Bayelsa|Captain Ijaw|🧑🏿‍✈️|Canoes dey race on the creek!",
-"Banga Soup Cook-off|Warri, Delta|Mama Isoko|👩🏿‍🍳|Palm nut soup and starch, who go win?",
-"Igue Festival|Benin City, Edo|Oba’s Messenger|👑|The royal beads dey shine. Honour the Oba!",
-"Benin Bronzes|Benin City, Edo|Master Caster|🧑🏿‍🎨|Cast the bronze, the world dey watch!",
-"Port Harcourt Carnival|Port Harcourt, Rivers|Carnival Queen|👸🏿|Garden City, make we party!",
-"Kwagh-hir Puppets|Makurdi, Benue|Tiv Showman|🧑🏿‍🎤|Tiv puppets and masks dey tell stories!",
-"Idoma Masquerade|Otukpo, Benue|Idoma Elder|🤴🏾|Drums are calling from Otukpo.",
-"Ata Igala|Idah, Kogi|Ata Igala|👑|Royal feast in the old Igala kingdom.",
-"Nupe Brass Craft|Bida, Niger|Master Nupe|🧑🏿‍🔧|Hammer the brass, Bida is proud!",
-"Berom Festival|Jos, Plateau|Jos Elder|🧓🏾|Cool Plateau air, hot Berom dance!",
-"Confluence|Lokoja, Kogi|Boat Captain|🧑🏾‍✈️|Where Niger meets Benue, sail with me!",
-"Abuja Carnival|Abuja|Carnival MC|🧑🏿‍🎤|All the tribes in one parade!",
-"Ilorin Durbar|Ilorin, Kwara|Emir’s Horseman|🏇|Gallop, gallop, the Emir is watching!",
-"Kainji Lake|New Bussa, Niger|Fisher Baba|🧑🏿‍🌾|Big fish dey Kainji. Cast the net!",
-"Gurara Falls|Niger State|Tour Guide|🧑🏾‍🦱|Waterfall wahala, catch the treats!",
-"Kofar Mata Dye Pits|Kano|Dyer Danjuma|🧑🏿‍🎨|Indigo cloth since 1498. Dye with me!",
-"Argungu Fishing|Argungu, Kebbi|Fisher Chief|🎣|Jump in the river, catch the biggest fish!",
-"Zaria Sallah Durbar|Zaria, Kaduna|Emir of Zazzau|🤴🏿|Sallah greetings! Horses and drums!",
-"Sokoto Caliphate|Sokoto|Sultan’s Scribe|👳🏿‍♂️|History dey every wall. Write with me!",
-"Katsina Walled City|Katsina|Hajiya Rabi|🧕🏿|Old city gates, new sweet treats!",
-"Fulani Cattle Market|Gusau, Zamfara|Fulani Herder|🐄|Cattle everywhere. Fura for everybody!",
-"Birnin Kudu Rocks|Jigawa|Rock Guide|🧗🏿|Climb the rocks, collect the goodies!",
-"Nok Terracotta|Kaduna|Nok Sculptor|🏺|2,000-year-old art, fresh hustle!",
-"Fura da Nono|Damaturu, Yobe|Fura Seller|🧕🏾|Cold nono, millet balls, come and drink!",
-"Shehu of Borno|Maiduguri, Borno|Shehu’s Waziri|👳🏿‍♂️|The Shehu’s court is open. Impress us!",
-"Yankari Reserve|Bauchi|Park Ranger|🐘|Elephants dey Yankari! Feed them well.",
-"Tangale Hills|Gombe|Hill Elder|👴🏾|Climb the Tangale hills for the harvest.",
-"Mambilla Plateau|Taraba|Tea Farmer|🧑🏾‍🌾|Tea, cool air and ripe harvest!",
-"Detty December|Lagos|DJ Detty|🎧|Lagos dey vibe! Turn the music up!",
-"Independence Jubilee|Eagle Square, Abuja|Mama Naija|👩🏾‍🦳|One Nigeria, one big party. Finish strong!"
-].map(x=>x.split('|'));
-const K=i=>i<10?6:i<22?7:8;
-const S=R.map(([n,loc,who,av,say],i)=>{const nk=K(i),sp=i%5==4,a=(i*3)%nk,b=(a+2+i%3)%nk,c=(a+4+i%2)%nk,g={};g[a]=12+Math.floor(i*.22);if(!sp){g[b]=7+Math.floor(i*.14);if(i>=20&&c!==a&&c!==b)g[c]=5+Math.floor(i*.1)}return{n,loc,who,av,say,g,sc:sp?1500+i*55:0,mv:20+Math.floor(i/5)+(sp?3:0),sp,nk}});
+const C=[
+"Awori|Lagos & Ogun|Among the earliest settlers of the land that became Lagos, known as farmers and fishers.",
+"Onitsha|Anambra|Home of the Ofala festival of the Obi and Onitsha Main Market, one of the largest in West Africa.",
+"Bini|Edo|The Benin Kingdom is famous for its bronze plaques and the Oba, and the Igue festival gives thanks for the new yam harvest.",
+"Igala|Kogi|Idah is home to the Ata Igala, and the Igala hold the Ogani war dances and the Italo reunion in Anyigba.",
+"Hausa of Kano|Kano|The Kofar Mata dye pits and the Kano Durbar are famous.",
+"Kanuri|Borno|The Kanem-Bornu Empire and the Shehu of Borno are central to Kanuri history.",
+"Egun|Badagry, Lagos|Home of Zangbeto, the masked “guardian of the night” of the Egun and Ogu peoples.",
+"Nri|Anambra|Nri is regarded as a spiritual cradle of Igbo tradition, led by the Eze Nri.",
+"Esan|Edo|",
+"Ebira|Kogi|The Echane and Ekuechi festivals honour ancestors.",
+"Hausa of Katsina|Katsina|Daura is traditionally regarded as the Hausa people’s place of origin.",
+"Shuwa Arab|Borno|Arabic-speaking people of the Borno area.",
+"Ijebu|Ogun|Their Ojude Oba festival fills the town with age-groups in rich regimental dress honouring the Awujale.",
+"Awka|Anambra|Famous for blacksmiths and woodcarvers.",
+"Etsako|Edo|The Au-Ukhua Carnival in Agenebode is held every 26 and 27 December.",
+"Kakanda|Kogi|",
+"Independence Day|Nationwide|Nigeria became independent on 1 October 1960.",
+"Egba|Abeokuta, Ogun|Abeokuta means “under the rock”, after Olumo Rock, and Egba women are famed for Adire dyed cloth.",
+"Nnewi|Anambra|Known as a hub of trade and industry, Nnewi also hosts the Afia Olu festival.",
+"Owan|Edo|",
+"Bassa-Nge|Kogi|",
+"Zazzau|Kaduna|Zaria is the seat of the Emir of Zazzau and its Sallah Durbar.",
+"Bura|Borno & Adamawa|",
+"Remo|Ogun|Iperu-Remo, in Ikenne, has its own Eyo festival.",
+"Aguleri|Anambra|",
+"Akoko-Edo|Edo|",
+"Bassa-Kwomu|Kogi|",
+"Sokoto|Sokoto|Sokoto was the centre of the Sokoto Caliphate, founded in 1804.",
+"Margi|Borno & Adamawa|",
+"Egbado|Ogun|The nine-day Oronna festival of Ilaro, in Yewa land, takes place each November.",
+"Igbo-Ukwu|Anambra|Ancient bronze works found at Igbo-Ukwu date back to about the 9th century, and the town hosts a National Yam Festival.",
+"Urhobo|Delta|Urhobo are known for rich dances and for banga (palm-nut) soup.",
+"Kupa|Kogi|",
+"Democracy Day|Nationwide|Nigerians mark Democracy Day on 12 June.",
+"Ibadan|Oyo|Ibadan began as a war camp in the 1800s and grew into one of the largest cities in West Africa.",
+"Ihiala|Anambra|",
+"Isoko|Delta|",
+"Gbede|Kogi|",
+"Gobir|Sokoto|Usman dan Fodio, leader of the Sokoto Caliphate, emerged in the old Hausa kingdom of Gobir.",
+"Kibaku|Borno|",
+"Oyo|Oyo|Seat of the Alaafin and the old Oyo Empire, a heartland of Egungun masquerades.",
+"Nsukka|Enugu|Home of the University of Nigeria and the Nsukka school of art.",
+"Itsekiri|Delta|The Olu of Warri is the Itsekiri monarch.",
+"Egbura|Nasarawa|The Egbura people of Umaisha celebrate the Ogani festival.",
+"Kebbawa|Kebbi|The Argungu Fishing Festival is held on the Matan Fada river.",
+"Mandara|Borno|Linked to the Mandara mountains on the Cameroon border.",
+"Ogbomoso|Oyo|",
+"Udi|Enugu|",
+"Okpe|Delta|",
+"Nupe|Niger|Bida is known for brass work and glass beads, and Pategi holds a famous boat regatta.",
+"Children’s Day|Nationwide|Celebrated every 27 May with school events and fun.",
+"Ibarapa|Oyo|Igbo-Ora is called the Twin Capital of the World and hosts the World Twins Festival.",
+"Agbani|Enugu|",
+"Uvwie|Delta|",
+"Gbagyi|Niger & FCT|Gbagyi pottery gave Nigeria the famous potter Ladi Kwali.",
+"Zamfarawa|Zamfara|Zamfara communities celebrate the Kalankuwa harvest festival with music, dance and storytelling.",
+"Kotoko|Borno|Fishing communities near Lake Chad.",
+"Oke-Ogun|Oyo|Igbeti’s hills host a tourism carnival with hiking and mountain climbing.",
+"Awgu|Enugu|",
+"Izon|Bayelsa & Delta|The Izon (Ijaw) are creek and river people, and Lake Efi hosts a fishing festival every four years.",
+"Kamuku|Niger|",
+"Dakarkari|Kebbi|The Uhola Festival in Zuru gives thanks for protection and harvest.",
+"Buduma|Borno|Island and shore communities of Lake Chad.",
+"Ife|Osun|Ile-Ife is the cradle of the Yoruba in tradition, and its ancient bronze and terracotta heads are world famous.",
+"Aro|Abia|The Aro of Arochukwu once ran a wide trading network, and their oracle was known across the region.",
+"Kalabari|Rivers|Known for fisherman’s soup, the Kalabari also hold a boat regatta and fishing festival.",
+"Kambari|Niger & Kebbi|Kambari communities celebrate the harvest at the Hutungo festival.",
+"Workers’ Day|Nationwide|Celebrated on 1 May to honour honest work.",
+"Ijesha|Osun|The Iwude Ijesa festival in Ilesa brings the sons and daughters of Ijesaland together each December.",
+"Ngwa|Abia|",
+"Okrika|Rivers|The Okrika Seaman’s Festival and Boat Regatta features decorated boats and canoes.",
+"Baangi|Niger|",
+"Zabarma|Kebbi|",
+"Manga|Yobe|",
+"Osogbo|Osun|The Osun-Osogbo Sacred Grove is a UNESCO World Heritage Site.",
+"Ohafia|Abia|Ohafia is famed for its warrior tradition and war dance.",
+"Nembe|Bayelsa|In 1895, Nembe’s King Koko led a famous raid on the Royal Niger Company’s base at Akassa.",
+"Gade|FCT & Nasarawa|",
+"Dendi|Kebbi|",
+"Bade|Yobe|The Bade Fishing Festival celebrates cultural values, peace and unity every February.",
+"Ila|Osun|Ila-Orangun’s Isinro festival remembers its founder Ajagunla, who came from Ile-Ife.",
+"Bende|Abia|",
+"Ogbia|Bayelsa|The Ayakoro festival honours Ogbia’s founding fathers and a historic relocation.",
+"Koro|Kaduna & Niger|",
+"NYSC Orientation|Nationwide|The National Youth Service Corps sends graduates to serve in a state other than their own, to build unity.",
+"Ekiti|Ekiti|Ekiti State calls itself the “Fountain of Knowledge”.",
+"Ibeku|Abia|Umuahia, Ibeku land, holds the Oriri Ji new yam festival in September.",
+"Epie-Atissa|Bayelsa|",
+"Ganagana|Niger|",
+"Arawa|Kebbi|",
+"Ngizim|Yobe|Potiskum’s Barakau festival celebrates cultural values and social interaction each November.",
+"Ondo|Ondo|",
+"Owerri|Imo|",
+"Andoni|Rivers|",
+"Dibo|Niger & Nasarawa|",
+"Fulani|Across northern Nigeria|Fulani follow Pulaaku, a code of patience, modesty and self-control, and celebrate courage in the Sharo rite of passage.",
+"Karekare|Yobe|",
+"Owo|Ondo|The Igogo festival honours Queen Oronsen and marks the new-year yam harvest.",
+"Mbaise|Imo|Mbaise celebrates the Iwa Akwa festival in December and January.",
+"Bonny|Rivers|Bonny’s colourful masquerade festival is held around Christmas.",
+"Tiv|Benue|Tiv are famed for Kwagh-hir puppet theatre and gather at Gboko every December for Mzough-U-Tiv, Tiv National Day.",
+"Eid-el-Fitr|Nationwide|Muslims celebrate the end of Ramadan with prayers, new clothes and sharing food.",
+"Ilaje|Ondo|The Ilaje Boat Regatta keeps canoe-building skills and maritime history alive.",
+"Orlu|Imo|",
+"Ogoni|Rivers|Ogoni land is known for a peaceful environmental rights movement, and Ogoni Day is marked on 4 January.",
+"Idoma|Benue|The Odumu masquerade honours the lion’s majesty, and the Ujor festival remembers past victories and the new yam.",
+"Dutse|Jigawa|Dutse, capital of Jigawa State, takes its name from the Hausa word for rock.",
+"Ngamo|Yobe|",
+"Ikale|Ondo|",
+"Okigwe|Imo|",
+"Eleme|Rivers|Eleme joins the Ogoni Day celebration every 4 January.",
+"Igede|Benue|At the Igede Agba festival each September, the Igede give thanks for the harvest before eating the new yam.",
+"Katagum|Bauchi|",
+"Bolewa|Yobe & Gombe|",
+"Akoko|Ondo|Akoko communities keep festivals such as Okota in Arigidi-Akoko.",
+"Oguta|Imo|Oguta Lake is a well-known lake and tourist spot.",
+"Ikwerre|Rivers|",
+"Etulo|Benue|Etulo sons and daughters gather every August at the Ukpleka festival before their chief, the Etsu-Etulo.",
+"Eid-el-Kabir|Nationwide|The “Sallah ram” festival celebrates sacrifice and sharing with others.",
+"Ilorin|Kwara|Yoruba, Hausa, Fulani and Nupe live side by side, and the Ilorin Durbar is a colourful horse parade.",
+"Afikpo|Ebonyi|Afikpo’s Okumkpa is a masquerade play that comments on society with satire.",
+"Etche|Rivers|",
+"Jukun|Taraba|Wukari is the seat of the Aku Uka, and the Jukun are linked to the old Kwararafa kingdom.",
+"Atyap|Kaduna|",
+"Higi|Adamawa & Borno|",
+"Igbomina|Kwara|Esie, an Igbomina town, is famous for its ancient stone images and its Esie festival.",
+"Ezza|Ebonyi|",
+"Ekpeye|Rivers|",
+"Utonkon|Benue|Utonkon’s Rekange festival cleanses the community of evil spirits.",
+"Bajju|Kaduna|",
+"Fali|Adamawa|",
+"Ibolo|Kwara|",
+"Ikwo|Ebonyi|",
+"Engenni|Rivers|",
+"Ufia|Benue|",
+"Christmas in Naija|Nationwide|Many families travel home to the village to share jollof, gifts and gist.",
+"Yagba|Kogi|",
+"Izzi|Ebonyi|",
+"Egbema|Rivers|",
+"Nyifon|Benue|",
+"Hyam|Kaduna|The Tuk-Ham festival preserves Ham customs and language each Easter period.",
+"Kilba|Adamawa|",
+"Ijumu|Kogi|The Ogidi Day festival marks the beginning of the new year in Ijumu.",
+"Ishielu|Ebonyi|",
+"Ogba|Rivers|",
+"Ukum|Benue|",
+"Ikulu|Kaduna|",
+"Bachama|Adamawa|The Nzeanzo festival is a Bachama tradition.",
+"Bunu|Kogi|",
+"Ohaukwu|Ebonyi|",
+"Abua|Rivers|",
+"Berom|Plateau|The Nzem Berom festival celebrates Berom culture.",
+"Easter|Nationwide|Christians mark Easter with church services and family meals.",
+"Oworo|Kogi|",
+"Abakaliki|Ebonyi|Abakaliki is famous for its rice and hosts a Dancing Festival every July.",
+"Odual|Rivers|",
+"Afizere|Plateau|The Afizere Cultural Festival marks the new year in January.",
+"Kagoro|Kaduna|The Afan Festival, whose name means mountain, celebrates the end of the harvest.",
+"Bwatiye|Adamawa|The Kwete and Farai wrestling festivals celebrate Bwatiye culture.",
+"Ikorodu|Lagos|",
+"Ukwuani|Delta|",
+"Ibibio|Akwa Ibom|Known for afang soup and rich masquerade traditions.",
+"Anaguta|Plateau|",
+"Kamantan|Kaduna|",
+"Mbula|Adamawa|",
+"Epe|Lagos|",
+"Aniocha|Delta|The Ogwashi-Uku Carnival is held on 25 and 26 December.",
+"Annang|Akwa Ibom|",
+"Aten|Plateau|",
+"Naija Pidgin|Nationwide|Pidgin English connects millions of Nigerians across tribes.",
+"Eko|Lagos Island|Home of the Eyo festival, where white-robed masquerades parade through the streets.",
+"Ika|Delta|Umunede in Ika land holds the Igwe festival after Easter to pray for the farming year.",
+"Oron|Akwa Ibom|Oron’s carved Ekpu ancestor figures are famous.",
+"Jarawa|Bauchi & Plateau|",
+"Adara|Kaduna|",
+"Longuda|Adamawa & Gombe|",
+"Iseyin|Oyo|Iseyin is known for hand-woven Aso-Oke cloth.",
+"Oshimili|Delta|Asaba welcomes the new yam each August with the Ezeugbo festival.",
+"Eket|Akwa Ibom|",
+"Ngas|Plateau|The Pusdung festival in Pankshin is a cultural celebration held in April.",
+"Kurama|Kaduna|",
+"Verre|Adamawa|",
+"Saki|Oyo|Saki celebrates the Odun Oko farming festival and the Asabari Hill tradition.",
+"Ndokwa|Delta|",
+"Ibeno|Akwa Ibom|Ibeno Beach is one of the longest sandy beaches in West Africa.",
+"Mwaghavul|Plateau|Puska’at in Mangu celebrates culture and heritage, and the invention of light.",
+"Aso-Ebi|Nationwide|Matching cloth worn by families and friends at celebrations, now loved across Nigeria.",
+"Ijebu-Igbo|Ogun|",
+"Enugu-Ezike|Enugu|",
+"Efik|Cross River|Calabar is known for edikang ikong soup, the Ekpe society and the Calabar Carnival.",
+"Mupun|Plateau|The Wang Festival celebrates Mupun culture every April.",
+"Chawai|Kaduna|",
+"Chamba|Adamawa & Taraba|",
+"Ejagham|Cross River|Linked with Nsibidi, an old system of symbols from south-eastern Nigeria.",
+"Goemai|Plateau|Goemai Day in Shendam celebrates Goemai culture and heritage.",
+"Gwong|Kaduna|",
+"Gude|Adamawa|",
+"Bekwarra|Cross River|",
+"Tarok|Plateau|Taroh Cultural Day in Langtang celebrates Tarok heritage.",
+"Ninzo|Kaduna|",
+"Bata|Adamawa|",
+"Bahumono|Cross River|",
+"Kofyar|Plateau|",
+"Jollof Day|Nationwide|Jollof rice is loved in many homes, and the “best jollof” debate never ends!",
+"Yakurr|Cross River|The Leboku new yam festival is a highlight of Yakurr culture.",
+"Montol|Plateau|",
+"Kadara|Kaduna|",
+"Tangale|Gombe|Billiri hosts Palam Tangle, a post-harvest festival of unity and peace.",
+"Boki|Cross River|",
+"Kwalla|Plateau|The Zarach Festival in Kwall and Miango marks the new year in January.",
+"Piti|Kaduna|",
+"Waja|Gombe|",
+"Bette|Obudu, Cross River|Bette people live around the cool Obudu plateau, and the Obudu New Yam Festival is held on the first Saturday of September.",
+"Ron|Plateau|The Ron/Kulere Festival is held at Bokkos around December and January.",
+"Fantswam|Kaduna|",
+"Tera|Gombe|",
+"Ukelle|Cross River|",
+"Irigwe|Plateau|The Irigwe New Year Celebration is held every January at Miango.",
+"Dadiya|Gombe|",
+"Yala|Cross River|The Okpambe Cultural and Fishing Festival is held every March in the Yala-Obubra area.",
+"Naija Music Night|Nationwide|Highlife, Juju, Fuji and Afrobeats grew from Nigerian traditions.",
+"Mbembe|Cross River|",
+"Rukuba|Plateau|",
+"Cham|Gombe|The Chugothe festival in April remembers war veterans and hunters.",
+"Korop|Cross River|",
+"Pyem|Plateau|",
+"Kamo|Gombe|",
+"Efut|Cross River|Efut communities join the Efik and Qua in the Nkotmbok masquerade gathering in Calabar.",
+"Chip|Plateau|",
+"Pero|Gombe|",
+"Ogoja|Cross River|",
+"Fier|Plateau|",
+"Sayawa|Bauchi|The Lemb Zaar festival in Tafawa Balewa celebrates culture, peace and unity every November.",
+"Eggon|Nasarawa|The three-day Eggon Carnival every December remembers the victories of Eggon ancestors.",
+"Warji|Bauchi|",
+"Mada|Nasarawa|The Nzeh Mada festival in Akwanga has dances, food displays and beauty pageants.",
+"Gerawa|Bauchi|",
+"500 Languages|Nationwide|Nigeria has more than 500 languages, and every one is a treasure.",
+"Gwandara|Nasarawa|",
+"Mumuye|Taraba|Mumuye carved wooden figures are admired worldwide.",
+"Alago|Nasarawa|The Alago of Keana hold the Ashirika festival, remembering a chain their ancestors used to cross the rivers.",
+"Mambilla|Taraba|The Mambilla Plateau is known for tea and cattle, and its cultural festivals travel from village to village.",
+"Migili|Nasarawa|",
+"Kuteb|Taraba|The Kuchicheb festival in Takum celebrates a good harvest every March.",
+"Afo|Nasarawa|",
+"Wurkum|Taraba|The Wurkun festival in Karim Lamido celebrates culture, peace and unity each December.",
+"Rindre|Nasarawa|",
+"Ichen|Taraba|",
+"Yandang|Taraba|The Yandang Festival in Lau celebrates the new crop harvest, unity and peace.",
+"Jenjo|Taraba|"
+];
+const ROLES=[['Mama','👩🏾‍🍳'],['Baba','👴🏿'],['Aunty','👵🏾'],['Uncle','🧔🏾'],['Chief','🤴🏿'],['Sister','👩🏿'],['Brother','🧑🏾'],['Elder','🧓🏿']];
+const TPL=['Help me gather food for today’s gathering.','Visitors are coming, so make we prepare well.','Market day! Help me stock my stall.','We are preparing for the village festival.','Help me cook for our guests.','Our community is celebrating. Come and join us!'];
+const S=C.map((x,i)=>{const[n,loc,fact]=x.split('|'),u=loc==='Nationwide',r=ROLES[i%8],t=i/249,nk=i<40?6:i<120?7:8,sp=i%5==4,mv=22+Math.floor(i/31)+(sp?2:0),k=sp?1:(i<10?1:i<60?2:3),cap=mv*4.5*k/nk,need=cap*(.6+.35*t),w=k===1?[1]:k===2?[.6,.4]:[.5,.3,.2],a=(i*3)%nk,g={};
+w.forEach((f,j)=>{g[(a+j*2)%nk]=Math.max(5,Math.round(need*f))});
+return{n,loc,who:u?'Mama Naija':r[0]+' '+n.split(' ')[0],av:u?'👩🏾‍🦳':r[1],say:(u?'Let us celebrate together! ':'You are visiting the '+n+' of '+loc+'. ')+TPL[i%6],fact:fact||'The '+n+' people live mainly in '+loc+'. Ask a friend from this community about their food, greetings and festivals, because culture is best learned from the people themselves!',g,sc:sp?Math.round(mv*(55+35*t)/50)*50:0,mv,sp,nk,seed:3+Math.floor(i/60)}});
 const praise=['Correct!','Sweet die!','Omo!','E don happen!','No be small thing!','Oga at the top!'];
-let g=[],sp=[],nk=6,lf={s:0,k:0,m:0},smashing=false,bk='title',sel=-1,score=0,moves=0,cur=0,busy=false,paused=false,goals={},fresh=new Set(),pop=new Set(),bonusPts=0,prog={u:0,s:[],hp:0,tot:0,don:{},lives:5,lt:0,nm:''};
+let g=[],sp=[],nk=6,lf={s:0,k:0,m:0},smashing=false,curBm=0,bk='title',sel=-1,score=0,moves=0,cur=0,busy=false,paused=false,goals={},fresh=new Set(),pop=new Set(),bonusPts=0,prog={u:0,s:[],hp:0,tot:0,don:{},lives:5,lt:0,nm:'',vp:0,pid:''};
 const $=id=>document.getElementById(id);
 try{const p=JSON.parse(localStorage.getItem('naijaCrush'));if(p&&typeof p.u==='number')prog=Object.assign(prog,p)}catch(e){}
 function save(){try{localStorage.setItem('naijaCrush',JSON.stringify(prog))}catch(e){}}
@@ -203,7 +414,7 @@ const goalTxt=s=>Object.keys(s.g).map(t=>T[t]+' ×'+s.g[t]).concat(s.sc?['⭐ '+
 /* ---------- screens ---------- */
 $('pz').onclick=()=>{if(busy&&!paused&&$('ov').classList.contains('on'))return;paused=true;music();
 ov('<div class="big">⏸</div><h2>Game paused</h2><p class="mute">Rest small, oga.</p>',[['▶ Resume',()=>{paused=false;music()}],['↻ Restart stage',()=>begin(cur),1],['🗺 Mission map',()=>{paused=false;renderMap();show('map');music()},1]])};
-function begin(i,r){cur=i;const s=S[i];goals={...s.g};nk=s.nk;lf={s:1,k:1,m:1};smashing=false;score=0;moves=s.mv;sel=-1;paused=false;busy=false;fresh=new Set();pop=new Set();fill();if(s.sp)seed();
+function begin(i,r,bm){if(bm!==undefined)curBm=bm;cur=i;const s=S[i];goals={...s.g};nk=s.nk;lf={s:1,k:1,m:1};smashing=false;score=0;moves=s.mv+curBm;sel=-1;paused=false;busy=false;fresh=new Set();pop=new Set();fill();if(s.sp)seed(s.seed);
 $('av').textContent=s.av;$('av').className='por sm';$('av').style.setProperty('--h',hue(i));$('stg').textContent='Stage '+(i+1)+': '+s.n;say(s.who+': '+(r||'Make we go!'));show('game');render();music();shout('Stage '+(i+1)+': '+s.loc+' 🇳🇬')}
 /* ---------- board ---------- */
 function fill(){g=[];sp=Array(N*N).fill(0);for(let r=0;r<N;r++)for(let c=0;c<N;c++){let v;do{v=rnd()}while((c>=2&&g[r*N+c-1]===v&&g[r*N+c-2]===v)||(r>=2&&g[(r-1)*N+c]===v&&g[(r-2)*N+c]===v));g[r*N+c]=v}if(!hasMove())fill()}
@@ -233,7 +444,7 @@ else if(moves<=0){lose()}
 else{if(moves<=3)shout('Only '+moves+' move'+(moves>1?'s':'')+' left! Hustle! 😤');if(!hasMove()){say('No more moves o! Mixing am...');do{g.sort(()=>Math.random()-.5)}while(find().size||!hasMove());render()}busy=false}}
 const praise2=['Correct!','Sweet die!','Omo! 🔥','E don happen!','No be small thing! 😮','Oga at the top! 👑','Chai! Wonders shall never end! 🤯'];
 function shout(t){const o=$('shout');o.textContent=t;o.style.color=['#ffd34d','#ff6fa5','#7dffb0','#7fd4ff'][Math.floor(Math.random()*4)];o.classList.remove('go');void o.offsetWidth;o.classList.add('go')}
-function seed(){for(let k=0;k<4;k++)sp[Math.floor(Math.random()*N*N)]=k===3?2:1}
+function seed(n){for(let k=0;k<n;k++)sp[Math.floor(Math.random()*N*N)]=k===n-1?2:1}
 function runs(){const o=[];
 for(let r=0;r<N;r++){let c=0;while(c<N){const v=g[r*N+c];let e=c;while(v>=0&&e+1<N&&g[r*N+e+1]===v)e++;if(v>=0&&e-c>=2){const a=[];for(let k=c;k<=e;k++)a.push(r*N+k);o.push(a)}c=e+1}}
 for(let c=0;c<N;c++){let r=0;while(r<N){const v=g[r*N+c];let e=r;while(v>=0&&e+1<N&&g[(e+1)*N+c]===v)e++;if(v>=0&&e-r>=2){const a=[];for(let k=r;k<=e;k++)a.push(k*N+c);o.push(a)}r=e+1}}
@@ -290,37 +501,117 @@ if(k==='m'){lf.m=0;moves+=5;shout('+5 MOVES! Oshey! 🎉');sfx.win()}
 if(k==='k'){smashing=!smashing;shout(smashing?'Tap a tile for PEPPER! 🌶️':'Pepper cancelled')}
 render()}
 /* nav */
-function mstat(){$('mstat').textContent='❤️'+prog.lives+(prog.lives<5?' ('+wait()+')':'')+'  💚'+prog.hp}
-$('cast').innerHTML=[[0,'Mama Put','Food seller'],[1,'Mallam Musa','Suya master'],[3,'Aunty Ngozi','Market queen'],[2,'Driver Ade','Danfo king'],[9,'Chief Iyabo','Party boss']].map(([i,n,r])=>'<div class="cm">'+por(S[i].av,i)+'<b>'+n+'</b><small>'+r+'</small></div>').join('');
+function mstat(){$('mstat').textContent='❤️'+prog.lives+(prog.lives<5?' ('+wait()+')':'')+'  💚'+prog.hp+'  🕊️'+prog.vp}
+$('cast').innerHTML=[0,1,2,3,4].map(i=>'<div class="cm">'+por(S[i].av,i)+'<b>'+S[i].who+'</b><small>'+S[i].loc.split(',')[0]+'</small></div>').join('');
 for(let i=0;i<9;i++){const f=document.createElement('span');f.className='fl';f.textContent=T[i%6];f.style.left=(i*11+3)+'%';f.style.animationDelay=(i*.8)+'s';$('title').firstChild.appendChild(f)}
 $('nick').value=prog.nm||'';
 $('play').onclick=()=>{prog.nm=$('nick').value.trim().slice(0,14)||prog.nm||'Player'+Math.floor(100+Math.random()*900);save();ac();music();renderMap();show('map')};
 $('mhome').onclick=()=>show('title');
 $('tlb').onclick=()=>openLB('title');$('mlb').onclick=()=>openLB('map');
 $('tfund').onclick=()=>openFund('title');$('mfund').onclick=()=>openFund('map');
+setInterval(()=>{if($('lb').classList.contains('on')&&dbx)renderLB()},15000);
 $('lback').onclick=()=>show(bk);$('fback').onclick=()=>{if(bk==='map')renderMap();show(bk)};
-function renderMap(){const c=$('stages');c.innerHTML='';updLives();mstat();
-S.forEach((s,i)=>{const d=document.createElement('div'),lk=i>prog.u;d.className='st'+(lk?' lock':'');
-d.innerHTML=(lk?'<div class="por sm" style="--h:0;filter:grayscale(1)">🔒</div>':por(s.av,i,'sm'))+'<div><b>'+(i+1)+'. '+s.n+(s.sp?' ⚡':'')+'</b><small>'+s.loc+' · '+s.who+'</small><br><small>'+(lk?'Locked':bond(prog.s[i]))+(prog.s[i]?'  '+'⭐'.repeat(prog.s[i]):'')+'</small></div>';
-if(!lk)d.onclick=()=>intro(i);c.appendChild(d)})}
+const SB={url:'https://iarezdekrbttimskdtsx.supabase.co',key:(window.NAIJA_CONFIG&&window.NAIJA_CONFIG.supabaseKey)||''};
+const sbOn=()=>!!SB.key;
+async function sb(path,o){o=o||{};const h={apikey:SB.key,Authorization:'Bearer '+SB.key,'Content-Type':'application/json'};if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
+if(!prog.pid){prog.pid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'p'+Math.random().toString(36).slice(2)+Date.now();save()}
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+$('mhelp').onclick=()=>openHelp('map');$('hback').onclick=()=>show(bk);
+function renderMap(){const c=$('stages');c.innerHTML='';updLives();mstat();const top=Math.min(S.length-1,prog.u+2);
+for(let i=0;i<=top;i++){const s=S[i],lk=i>prog.u,d=document.createElement('div');d.className='st'+(lk?' lock':'');
+d.innerHTML=(lk?'<div class="por sm" style="--h:0;filter:grayscale(1)">🔒</div>':por(s.av,i,'sm'))+'<div><b></b><small></small><br><small></small></div>';
+const q=d.querySelectorAll('b,small');q[0].textContent=(i+1)+'. '+s.n+(s.sp?' ⚡':'');q[1].textContent=s.loc+' · '+s.who;q[2].textContent=(lk?'Locked':bond(prog.s[i]))+(prog.s[i]?'  '+'⭐'.repeat(prog.s[i]):'');
+if(!lk)d.onclick=()=>intro(i);c.appendChild(d)}
+if(top<S.length-1)c.appendChild(el('p','mute','… and '+(S.length-1-top)+' more cultures to discover 🌍'));
+const cu=c.children[Math.min(prog.u,top)];if(cu)setTimeout(()=>cu.scrollIntoView({block:'center'}),50)}
+const D=[
+"Honesty|The trader gave you N500 too much change and nobody saw. What do you do?|Return the extra money|Keep it quietly|Honest hands build a good name that lasts.",
+"Honesty|You find a wallet with cash and an ID card on the road.|Find the owner and return it|Take the cash and drop the wallet|What is not yours stays not yours.",
+"Responsibility|You broke a neighbour’s window while playing.|Own up and offer to pay|Run away and say nothing|Owning your mistakes earns respect.",
+"Integrity|A friend offers exam answers for a small “favour”.|Say no and study|Take the answers|Real success is the one you earned.",
+"Integrity|An officer says your papers will move faster if you “settle” him.|Refuse and follow the proper process|Pay him quietly|Bribery steals from everyone.",
+"Responsibility|You borrowed money and promised to pay on Friday. Friday is here.|Pay on time or explain early|Avoid the lender|A promise is a debt of honour.",
+"Honesty|A plate broke and your little brother may be blamed.|Tell the truth|Let him take the blame|Truth protects the innocent.",
+"Respect|An elder is carrying a heavy load.|Greet and help carry it|Walk past|Respect for elders is the root of community.",
+"Kindness|A hungry stranger asks for food while you eat.|Share your meal|Pretend not to hear|Sharing makes the meal sweeter.",
+"Fairness|You are sharing food among workers, and one is a stranger.|Give everyone an equal share|Give the stranger less|Fairness treats everyone as people.",
+"Courage|You see someone being bullied.|Speak up or get help|Laugh along|Courage, even a small one, can save a life.",
+"Integrity|A cousin invites you to join an internet fraud “business”.|Refuse and work honestly|Join because it pays fast|Quick money from cheating always costs more.",
+"Integrity|A politician’s agent offers rice and cash for your vote.|Vote with your conscience|Sell your vote|Your vote is your voice. Do not sell it.",
+"Honesty|You sell rice and could mix sand in to add weight.|Sell honest quality|Mix in the sand|A good name sells more than a trick.",
+"Responsibility|You are asked to watch the younger children.|Stay and watch them carefully|Leave to go and play|Caring for others is a serious trust.",
+"Patience|The bank queue is long and you are in a hurry.|Wait your turn|Jump the queue|Patience keeps order for everyone.",
+"Honesty|A customer asks you to weigh the goods.|Use a true measure|Use a rigged scale|Fair weight, fair trade.",
+"Unity|A message spreads, blaming one tribe for a problem.|Check the facts and do not forward it|Forward it quickly|Rumours divide, facts unite.",
+"Integrity|You are treasurer of the village union and find extra money in the box.|Report it and record it|Keep it for yourself|Public trust is sacred.",
+"Respect|Your friend’s community is holding a festival you do not know.|Ask and respect the customs|Mock what you do not understand|Curiosity opens doors, mockery closes them.",
+"Responsibility|It is Sanitation Saturday and your gutter is blocked.|Clear it with the neighbours|Leave it for someone else|A clean street is everyone’s job.",
+"Forgiveness|A neighbour who wronged you says sorry.|Forgive and make peace|Hold a grudge forever|Forgiveness frees your own heart.",
+"Honesty|The teacher asks something you do not know.|Admit it and learn|Pretend and guess|Saying “I do not know” is the first step to learning.",
+"Responsibility|The book you borrowed is overdue.|Return it with thanks|Keep it and forget|Return what you borrow.",
+"Responsibility|Passengers want the danfo driver to carry more people than is safe.|Refuse for safety|Squeeze them all in|Safety comes before profit.",
+"Integrity|You promised to help a friend, then got a better offer.|Keep your promise|Break the promise|Your word is your bond.",
+"Gratitude|Someone helped you in a hard time.|Say thanks and pay it forward|Forget about it|Gratitude keeps goodness moving.",
+"Hard work|Your farm is dry and a shortcut would pollute the river.|Use a safe method|Pollute the river|Hard work must not harm others.",
+"Honesty|You notice your exam score was added up wrongly in your favour.|Tell the teacher|Keep quiet|Honest scores build real knowledge.",
+"Kindness|A classmate cannot pay for the school trip.|Help quietly|Make fun of them|Kindness lifts people quietly."
+].map(x=>x.split('|'));
 function intro(i){const s=S[i];tick();
 if(prog.lives<=0){ov('<div class="big">💔</div><h2>No lives left</h2><p>Rest small, '+nick()+'. Next life in <b>'+wait()+'</b>.</p>',[['Back',()=>{renderMap();show('map')},1]]);return}
-const st=prog.s[i]||0,pv=i?S[i-1].who:'',l1=st?'Welcome back, '+nick()+'! '+bond(st)+' — I dey happy to see you.':(i?pv+' talk well well about you, '+nick()+'!':'Hey '+nick()+'! Welcome to Naija!');
-ov(por(s.av,i,'big')+'<h2>'+s.who+'</h2><small class="mute">'+s.loc+' · '+bond(st)+'</small><div class="bub">'+l1+'</div><div class="bub">'+s.say+'<br><b>'+goalTxt(s)+'</b></div>',
-[['I dey for you! 💪',()=>begin(i,'Ah, na you be my person! 💚')],['Back',()=>show('map'),1]])}
+const st=prog.s[i]||0,pv=i?S[i-1].who:'',d=D[i%D.length],l1=st?'Welcome back, '+nick()+'! '+bond(st)+' — I dey happy to see you.':(i?pv+' talk well well about you, '+nick()+'!':'Hey '+nick()+'! Welcome to Naija!');
+const o=[[d[2],1],[d[3],0]];if(i%2)o.reverse();
+ov(por(s.av,i,'big')+'<h2></h2><small class="mute"></small><div class="bub"></div><div class="bub"></div><div class="bub"></div>',[]);
+const b=$('box'),q=b.querySelectorAll('h2,small,.bub');q[0].textContent=s.who;q[1].textContent=s.loc+' · '+bond(st);q[2].textContent=l1;q[3].textContent=s.say+' '+goalTxt(s);q[4].textContent='🕊️ '+d[0]+': '+d[1];
+o.forEach(([t,gd])=>{const x=el('button','btn',t);x.onclick=()=>{$('ov').classList.remove('on');pick(i,gd,d)};b.appendChild(x)});
+const bk2=el('button','btn alt','Back');bk2.onclick=()=>{$('ov').classList.remove('on');show('map')};b.appendChild(bk2)}
+function pick(i,good,d){const s=S[i];if(good){prog.vp++;save();sfx.win()}
+ov(por(s.av,i,'big')+'<div class="bub"></div>',[['Start mission 🔥',()=>begin(i,good?'I knew you were a good person! 💚':'We all learn, my friend. Let’s go!',good?2:0)]]);
+$('box').querySelector('.bub').textContent=good?'Ah, that is the way. '+d[0]+' wins! ✨ +2 bonus moves':'Hmm. '+d[4]+' Next time: '+d[2].toLowerCase()+'.'}
+/* help exchange */
+const RS=['School books and supplies','Food for my family','Transport fare to school','Medicine for a parent','Exam registration fee'];
+function openHelp(f){bk=f;show('help');renderHelp()}
+function hcard(r,mineF,sum){const b=el('div','fq');b.appendChild(el('h3','',(mineF?'🙏 Your request: ':'🤝 '+r.name+' needs: ')+r.reason));
+const pb=el('div','pb'),f=el('div');f.style.width=Math.min(100,sum/r.need*100)+'%';pb.appendChild(f);b.appendChild(pb);b.appendChild(el('small','',sum+' / '+r.need+' 💚'));
+if(mineF){const x=el('button','pill','Cancel request');x.onclick=async()=>{try{await sb('help_requests?id=eq.'+r.id,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({open:false})})}catch(e){}renderHelp()};b.appendChild(x)}
+else[50,100].forEach(a=>{const x=el('button','pill','Give '+a);x.disabled=prog.hp<a;x.onclick=()=>giveHelp(r,a);b.appendChild(x)});return b}
+async function giveHelp(r,a){if(prog.hp<a)return;prog.hp-=a;save();
+try{await sb('gifts',{method:'POST',prefer:'return=minimal',body:JSON.stringify({req_id:r.id,to_pid:r.pid,from_name:nick(),amount:a})});prog.don.h=(prog.don.h||0)+a;save();syncLB();shout('💚 You gave '+a+' to '+r.name+'. Oshey!');sfx.win();burst()}
+catch(e){prog.hp+=a;save();shout('Could not send. Try again')}renderHelp()}
+async function renderHelp(){const c=$('hcards');
+if(!sbOn()){c.innerHTML='<p class="mute">The Help Exchange runs in the online version of the game, once it is connected to its server.</p>';return}
+c.innerHTML='<p class="mute">Loading…</p>';
+try{
+const gs=await sb('gifts?select=amount,from_name&to_pid=eq.'+prog.pid+'&claimed=eq.false');
+if(gs.length){const t=gs.reduce((a,x)=>a+x.amount,0);prog.hp+=t;save();await sb('gifts?to_pid=eq.'+prog.pid+'&claimed=eq.false',{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({claimed:true})});shout('💚 +'+t+' from '+[...new Set(gs.map(x=>x.from_name))].slice(0,2).join(' & ')+'!');burst();sfx.win()}
+const rq=await sb('help_requests?select=id,pid,name,reason,need&open=eq.true&order=ts.desc&limit=20'),sums={};
+if(rq.length)(await sb('gifts?select=req_id,amount&req_id=in.('+rq.map(r=>r.id).join(',')+')')).forEach(x=>{sums[x.req_id]=(sums[x.req_id]||0)+x.amount});
+const my=rq.find(r=>r.pid===prog.pid);
+if(my&&(sums[my.id]||0)>=my.need){await sb('help_requests?id=eq.'+my.id,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({open:false})});shout('Your request is fully funded! 🙏');renderHelp();return}
+c.innerHTML='';c.appendChild(el('p','','Your wallet: 💚 '+prog.hp)).style.fontWeight='800';
+if(my)c.appendChild(hcard(my,true,sums[my.id]||0));
+else{const f=el('div','fq');f.appendChild(el('h3','','🙋 Ask for help'));f.appendChild(el('small','mute','Ask only if you truly need it. Honesty first!'));
+const s1=el('select');RS.forEach(x=>s1.appendChild(el('option','',x)));const s2=el('select');[100,250,500].forEach(x=>{const o=el('option','',x+' Heart Points');o.value=x;s2.appendChild(o)});
+const b=el('button','btn','Post my request');b.onclick=async()=>{try{await sb('help_requests',{method:'POST',prefer:'return=minimal',body:JSON.stringify({pid:prog.pid,name:nick(),reason:s1.value,need:+s2.value})});shout('Request posted. Hope dey! 🙏')}catch(e){shout('Could not post. Try again')}renderHelp()};
+f.appendChild(s1);f.appendChild(s2);f.appendChild(b);c.appendChild(f)}
+const others=rq.filter(r=>r.pid!==prog.pid);c.appendChild(el('h3','','Players who need help'));
+if(!others.length)c.appendChild(el('p','mute','No open requests right now. Check back soon!'));
+others.forEach(r=>c.appendChild(hcard(r,false,sums[r.id]||0)))}
+catch(e){c.innerHTML='<p class="mute">Could not reach the server. Check your connection and try again.</p>'}}
 /* leaderboard */
 let dbx=null,uid=null;
 (async()=>{try{if(window.claude&&claude.use){dbx=await claude.use('db');const u=await claude.use('user');if(u&&u.id)uid=await u.id()}}catch(e){}})();
-const mine=()=>({name:nick(),tot:prog.tot,m:prog.s.filter(Boolean).length,don:Object.values(prog.don).reduce((a,b)=>a+b,0),ts:Date.now()});
-async function syncLB(){if(!dbx||!uid)return;try{await dbx.doc('lb/'+uid).set(mine())}catch(e){}}
+const mine=()=>({name:nick(),tot:prog.tot,vp:prog.vp,m:prog.s.filter(Boolean).length,don:Object.values(prog.don).reduce((a,b)=>a+b,0),ts:Date.now()});
+async function syncLB(){if(sbOn()){try{const{ts,...o}=mine();await sb('players',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:JSON.stringify({id:prog.pid,...o})})}catch(e){}return}
+if(!dbx||!uid)return;try{await dbx.doc('lb/'+uid).set(mine())}catch(e){}}
 async function openLB(f){bk=f;show('lb');$('lbl').innerHTML='<p class="mute">Loading…</p>';await syncLB();renderLB()}
 async function renderLB(){const c=$('lbl');let rows=null;
-if(dbx){try{const sn=await dbx.collection('lb').orderBy('tot','desc').limit(20).get();rows=sn.docs.map(d=>({id:d.id,...d.data()}))}catch(e){}}
+if(sbOn()){try{rows=await sb('players?select=id,name,tot,m,don,vp&order=tot.desc&limit=20')}catch(e){}}
+else if(dbx){try{const sn=await dbx.collection('lb').orderBy('tot','desc').limit(20).get();rows=sn.docs.map(d=>({id:d.id,...d.data()}))}catch(e){}}
 c.innerHTML='';
 if(!rows||!rows.length){c.innerHTML='<p class="mute">The shared board is not available here, so this shows your own best on this device. Win missions to climb!</p>';rows=[{id:'me',...mine()}]}
-rows.forEach((r,i)=>{const d=document.createElement('div');d.className='lbr'+(r.id===uid||r.id==='me'?' me':'');
+rows.forEach((r,i)=>{const d=document.createElement('div');d.className='lbr'+(r.id===uid||r.id===prog.pid||r.id==='me'?' me':'');
 d.innerHTML='<b class="rk">'+(['🥇','🥈','🥉'][i]||(i+1))+'</b><span class="nm"></span><span class="pts"></span>';
-d.querySelector('.nm').textContent=(r.name||'Player')+' · '+(r.m||0)+' missions · 💚 given '+(r.don||0);d.querySelector('.pts').textContent=(r.tot||0).toLocaleString();c.appendChild(d)})}
+d.querySelector('.nm').textContent=(r.name||'Player')+' · '+(r.m||0)+' missions · 💚 given '+(r.don||0)+' · 🕊️ '+(r.vp||0);d.querySelector('.pts').textContent=(r.tot||0).toLocaleString();c.appendChild(d)})}
 /* heart fund */
 const Q=[['🏠','Hope Orphanage Home','Meals, school fees and warm beds for children in care.',2000,'The children sing your name tonight. Thank you!'],
 ['🌱','New Dawn Recovery','Counselling, treatment support and job training for people rebuilding their lives after addiction. Recovery is possible, and nobody has to do it alone.',3000,'Today, a new life begins. Thank you for believing in them!'],
@@ -341,7 +632,7 @@ function win(){const left=bonusPts/100,st=left>=8?3:left>=4?2:1,s=S[cur];
 prog.s[cur]=Math.max(prog.s[cur]||0,st);if(cur+1>prog.u&&cur+1<S.length)prog.u=cur+1;
 const earn=Math.floor(score/10)+st*25;prog.hp+=earn;prog.tot+=earn;save();syncLB();sfx.win();burst();shout('MISSION DON LAND! 🏆');
 const last=cur===S.length-1,th=['Thank you o!','You try well well! 💚','Oshey! You are family now! 🇳🇬'][st-1];
-ov(por(s.av,cur,'big')+'<h2>'+(last?'Naija Champion! 🏆':'Mission complete! 🎉')+'</h2><div class="bub">“'+th+'”<br><small>— '+s.who+'</small></div><p style="font-size:26px;margin:4px">'+'⭐'.repeat(st)+'</p><p><b>+'+earn+' 💚 Heart Points</b></p><p class="mute">Bond: '+bond(prog.s[cur])+(bonusPts?' · includes '+bonusPts+' extra-move bonus':'')+'</p>',
+ov(por(s.av,cur,'big')+'<h2>'+(last?'Naija Champion! 🏆':'Mission complete! 🎉')+'</h2><div class="bub">“'+th+'”<br><small>— '+s.who+'</small></div><div class="bub">🌍 <b>'+s.n+'</b> · '+s.loc+'<br>'+s.fact+'</div><p style="font-size:26px;margin:4px">'+'⭐'.repeat(st)+'</p><p><b>+'+earn+' 💚 Heart Points</b></p><p class="mute">Bond: '+bond(prog.s[cur])+(bonusPts?' · includes '+bonusPts+' extra-move bonus':'')+'</p>',
 (last?[]:[['Next mission ➜',()=>intro(cur+1)]]).concat([['💚 Heart Fund',()=>openFund('map'),1],['Mission map',()=>{renderMap();show('map')},1]]))}
 function lose(){sfx.lose();const s=S[cur];
 const fin=()=>{loseLife();ov('<div class="big">😅</div><h2>Moves don finish</h2><div class="bub">“No wahala, try again!” <small>— '+s.who+'</small></div><p>You lost a life ❤️ ('+prog.lives+' left)</p>',(prog.lives>0?[['Try again',()=>begin(cur)]]:[]).concat([['Mission map',()=>{renderMap();show('map')},1]]))};
