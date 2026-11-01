@@ -45,3 +45,5 @@ Settings > Pages > `main` branch, root folder. The same files work there.
 
 ## Culture facts
 Facts shown after each mission live in the `C` list in `index.html` (name|area|fact). Entries with an empty fact show a placeholder. Most facts come from the Nigerian Tourism Development Authority festival list and common knowledge; please have a member of each community review their entry before you promote the game.
+
+Let's go!
