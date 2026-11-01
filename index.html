@@ -514,7 +514,7 @@ $('tlb').onclick=()=>openLB('title');$('mlb').onclick=()=>openLB('map');
 $('tfund').onclick=()=>openFund('title');$('mfund').onclick=()=>openFund('map');
 setInterval(()=>{if($('lb').classList.contains('on')&&dbx)renderLB()},15000);
 $('lback').onclick=()=>show(bk);$('fback').onclick=()=>{if(bk==='map')renderMap();show(bk)};
-const SB={url:'https://iarezdekrbttimskdtsx.supabase.co',key:(window.NAIJA_CONFIG&&window.NAIJA_CONFIG.supabaseKey)||''};
+const SB={url:'https://iarezdekrbttimskdtsx.supabase.co',key:(window.NAIJA_CONFIG&&window.NAIJA_CONFIG.supabaseKey)||'sb_publishable_c7sk3lI_Z4C8l4k2CK1lLA_2EO_NkbH'};
 const sbOn=()=>!!SB.key;
 let auth=null;try{auth=JSON.parse(localStorage.getItem('naijaAuth'))}catch(e){}
 async function sb(path,o){o=o||{};const h={apikey:SB.key,'Content-Type':'application/json'},tk=await tok();if(auth)h.Authorization='Bearer '+tk;if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
