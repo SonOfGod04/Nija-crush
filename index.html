@@ -99,6 +99,7 @@ select{width:100%;padding:10px;border-radius:10px;margin:6px 0;border:1px solid 
 <input id="nick" maxlength="14" placeholder="Enter your nickname" autocomplete="off">
 <div id="authbox" style="display:none"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password"><div class="pills"><button class="pill" id="si">Sign in</button><button class="pill" id="su">Create account</button></div><p id="amsg" class="mute" style="color:#ffe9a0"></p></div>
 <div id="who" style="display:none"></div>
+<p id="diag" style="color:#ffe9a0;font-size:12px;margin:6px 0"></p>
 <button class="btn gold" id="play">▶ PLAY NOW</button>
 <div class="pills"><button class="pill" id="tlb">🏆 Leaderboard</button><button class="pill" id="tfund">💚 Heart Fund</button></div>
 <div class="band"></div></div></div>
@@ -516,7 +517,7 @@ $('lback').onclick=()=>show(bk);$('fback').onclick=()=>{if(bk==='map')renderMap(
 const SB={url:'https://iarezdekrbttimskdtsx.supabase.co',key:(window.NAIJA_CONFIG&&window.NAIJA_CONFIG.supabaseKey)||''};
 const sbOn=()=>!!SB.key;
 let auth=null;try{auth=JSON.parse(localStorage.getItem('naijaAuth'))}catch(e){}
-async function sb(path,o){o=o||{};const h={apikey:SB.key,Authorization:'Bearer '+await tok(),'Content-Type':'application/json'};if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
+async function sb(path,o){o=o||{};const h={apikey:SB.key,'Content-Type':'application/json'},tk=await tok();if(auth)h.Authorization='Bearer '+tk;if(o.prefer)h.Prefer=o.prefer;const r=await fetch(SB.url+'/rest/v1/'+path,{method:o.method||'GET',headers:h,body:o.body});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null}
 if(!prog.pid){prog.pid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'p'+Math.random().toString(36).slice(2)+Date.now();save()}
 if(auth)prog.pid=auth.uid;
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
@@ -657,4 +658,14 @@ if(force)await sb('players?id=eq.'+auth.uid,{method:'PATCH',prefer:'return=minim
 async function doSignin(){const e=$('em').value.trim(),p=$('pw').value;if(!e||p.length<6){amsg('Enter your email and a password of 6+ characters.');return}
 amsg('Signing in…');try{auth=null;setAuth(await au('token?grant_type=password',{email:e,password:p}));await loadProfile(true);renderAuth();amsg('');shout('Welcome, '+nick()+'! 💚')}catch(x){auth=null;amsg(x.message)}}
 async function doSignup(){const e=$('em').value.trim(),p=$('pw').value,n=$('nick').value.trim();
-
+if(!/^[A-Za-z0-9 .-]{2,14}$/.test(n)){amsg('Pick a nickname of 2 to 14 letters, numbers, spaces, dots or hyphens.');return}
+if(!e||p.length<6){amsg('Enter your email and a password of 6+ characters.');return}
+amsg('Creating account…');try{const t=await sb('players?select=id&name=ilike.'+encodeURIComponent(n)+'&limit=1');if(t&&t.length){amsg('That nickname is taken. Try another.');return}
+const j=await au('signup',{email:e,password:p,data:{name:n}});
+if(j.access_token){auth=null;prog.nm=n;setAuth(j);await loadProfile(true);renderAuth();amsg('');shout('Account created! 🎉')}else amsg('Account created! Check your email to confirm it, then sign in.')}catch(x){amsg(x.message)}}
+function renderAuth(){const on=sbOn();$('authbox').style.display=on&&!auth?'block':'none';$('who').style.display=on&&auth?'block':'none';$('nick').style.display=auth?'none':'block';
+if(on&&auth){const w=$('who');w.innerHTML='';w.appendChild(el('p','','Signed in as '+nick()+' ✅'));const b=el('button','pill','Sign out');b.onclick=()=>{auth=null;authSave();try{localStorage.removeItem('naijaCrush')}catch(e){}location.reload()};w.appendChild(b)}}
+async function chk(){if(!auth)return;try{const r=await sb('players?select=sid&id=eq.'+auth.uid);if(r&&r[0]&&r[0].sid&&r[0].sid!==auth.sid){auth=null;authSave();try{localStorage.removeItem('naijaCrush')}catch(e){}ov('<div class="big">🔒</div><h2>Signed out</h2><p>This account was opened on another device.</p>',[['OK',()=>location.reload()]])}}catch(e){}}
+$('diag').textContent=sbOn()?'Online features connected ✓':(window.NAIJA_CONFIG?'Online sign-in is off: config.js loaded, but supabaseKey is empty.':'Online sign-in is off: config.js was not found. Upload it next to index.html.');$('si').onclick=doSignin;$('su').onclick=doSignup;renderAuth();
+if(auth){loadProfile(false).then(()=>{renderAuth();chk()});setInterval(chk,60000)}
+</script></body></html>
